@@ -1,6 +1,7 @@
 package se.bth.students.quizzard;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this,"List quizzes!",Toast.LENGTH_SHORT).show();
+                Intent listInt = new Intent(MainActivity.this,ListQuizzes.class);
+                startActivity(listInt);
             }
         });
 
@@ -29,6 +32,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this,"Create quiz!",Toast.LENGTH_SHORT ).show();
+                Intent createInt = new Intent(MainActivity.this,CreateQuiz.class);
+                startActivity(createInt);
             }
         });
     }
