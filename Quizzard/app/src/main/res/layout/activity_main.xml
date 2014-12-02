@@ -17,7 +17,7 @@
         android:layout_height="wrap_content" />
 
    <Button
-       android:id="@+id/List_Quizzes"
+       android:id="@+id/list_Quizzes"
        android:text="List Quizzes"
        android:layout_below="@+id/txtQuizzard"
        android:layout_centerInParent="true"
@@ -27,7 +27,8 @@
        android:layout_marginTop="70dp"/>
 
     <Button
-        android:layout_below="@+id/List_Quizzes"
+        android:id="@+id/create_Quiz"
+        android:layout_below="@+id/list_Quizzes"
         android:text="Create Quiz"
         android:layout_centerInParent="true"
         android:layout_width="200dp"

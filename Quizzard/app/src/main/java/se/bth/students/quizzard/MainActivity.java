@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -12,17 +15,33 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button list = (Button) findViewById(R.id.list_Quizzes);
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"List quizzes!",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button createQ = (Button) findViewById(R.id.create_Quiz);
+        createQ.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"Create quiz!",Toast.LENGTH_SHORT ).show();
+            }
+        });
     }
 
 
-    @Override
+  /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+      //  getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    @Override
+   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -35,5 +54,5 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }
