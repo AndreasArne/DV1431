@@ -1,22 +1,65 @@
 package se.bth.students.quizzard;
 
+import java.util.ArrayList;
+
 /**
  * Created by mihai on 2014-12-02.
  */
 public class Question {
-    private String answers[] = null;
-    private int[] rightAnswers = null;
+    private String question = "some_question";
+    private ArrayList<Answer> answers = new ArrayList<Answer>();
 
-    public void Question() {
-
+    public Question(String question) {
+        this.question = question;
     }
 
-    public String[] getAnswers() {
+    /**
+     * adds a new answer to this question
+     * @param answer
+     * @param right
+     */
+    public void addAnswer(String answer, boolean right) {
+        Answer ans = new Answer(answer,right);
+        this.answers.add(ans);
+    }
+
+    public ArrayList<Answer> getAnswers() {
         return this.answers;
     }
 
-    public int[] getRightAnswers() {
-        return this.rightAnswers;
+    /**
+     *
+     * @return a list of Answer objects that belong to this question and are marked as 'right'
+     */
+    public ArrayList<Answer> getRightAnswers() {
+        ArrayList<Answer> rightAnswers = new ArrayList<Answer>();
+        for (Answer ans:this.answers) {
+            if (ans.isRight())
+                rightAnswers.add(ans);
+        }
+
+        return rightAnswers;
     }
+
+    /**
+     *
+     * @return true if this question has only one right answer, false if it has multiple right answers
+     */
+    public boolean hasUniqueRightAnswer() {
+        boolean ret;
+        int counter = 0;
+        for (Answer ans:this.answers) {
+            if (ans.isRight())
+                counter++;
+        }
+
+        if (counter == 1)
+            ret = true;
+        else ret = false;
+
+        return ret;
+    }
+
+
 
 }

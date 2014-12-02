@@ -13,7 +13,7 @@ public class Quiz {
     private String author = "some_author";
     boolean finished = false; // if false this quiz has still to be completed with new questions, right answers etc.
 
-    public void Quiz(String course, String name, String author) {
+    public Quiz(String course, String name, String author) {
         this.course = course;
         this.name = name;
         this.author = author;
