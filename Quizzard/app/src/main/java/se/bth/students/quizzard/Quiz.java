@@ -1,16 +1,25 @@
 package se.bth.students.quizzard;
 
+
+import java.util.ArrayList;
+
 /**
  * Created by mihai on 2014-12-02.
  */
 public class Quiz {
-    private Question[] questions = null;
-    private String course;
-    private String name;
-    private String author;
+    private ArrayList<Question> questions = new ArrayList<Question>();
+    private String course = "some_course";
+    private String name = "some_name";
+    private String author = "some_author";
     boolean finished = false; // if false this quiz has still to be completed with new questions, right answers etc.
 
-    public Question[] getQuestions() {
+    public void Quiz(String course, String name, String author) {
+        this.course = course;
+        this.name = name;
+        this.author = author;
+    }
+
+    public ArrayList<Question> getQuestions() {
         return this.questions;
     }
 
@@ -36,5 +45,9 @@ public class Quiz {
 
     void setAuthor(String author) {
         this.author = author;
+    }
+
+    void addQuestion(Question question) {
+        this.questions.add(question);
     }
 }
