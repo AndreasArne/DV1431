@@ -10,7 +10,7 @@ public class DoQuiz extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doQuizz);
+        setContentView(R.layout.activity_do_quizz);
     }
 
 
