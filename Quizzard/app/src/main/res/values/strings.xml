@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Quizzard</string>
-    <string name="hello_world">Salutare lume!!</string>
+    <string name="hello_world">Salutare lume!!!!</string>
     <string name="action_settings">Settings</string>
 
 </resources>
