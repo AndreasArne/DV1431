@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="se.bth.students.quizzard.ListQuizzes"
+            android:label="ListQuizzes"
+            android:parentActivityName="se.bth.students.quizzard.MainActivity" />
+
     </application>
 
 </manifest>
