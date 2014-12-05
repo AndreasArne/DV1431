@@ -1,12 +1,14 @@
 package se.bth.students.quizzard;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by mihai on 2014-12-02.
  */
-public class Quiz {
+public class Quiz implements Serializable{
+    private static final long serialVersionUID = 1L;
     private ArrayList<Question> questions = new ArrayList<Question>();
     private String course = "some_course";
     private String name = "some_name";
