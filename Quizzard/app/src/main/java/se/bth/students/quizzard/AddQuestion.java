@@ -3,6 +3,7 @@ package se.bth.students.quizzard;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,17 +46,27 @@ public class AddQuestion extends Activity  {
         Log.i("mytag", "entered saveQuestion!");
         EditText questionTxt = (EditText) findViewById(R.id.question_text);
         String questionStr = questionTxt.getText().toString();
-        this.question = new Question(questionStr);
-        this.quiz.addQuestion(this.question);
+        Question question = new Question(questionStr);
+        question.setHasUniqueRightAnswer(this.question_type == UNIQUE);
+        question.attachAnswers(this.answers);
+        this.quiz.addQuestion(question);
         Log.i("mytag", "in saveQuestion: quiz name: "+quiz.getName()+", nr of questions: "+quiz.getQuestions().size());
-        onBackPressed();
+        saveAndFinish();
 
     }
 
-    @Override
+    private void saveAndFinish() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("Quiz", this.quiz);
+        setResult(Activity.RESULT_OK, resultIntent);
+
+        finish();
+    }
+
+ /*   @Override
     public void onBackPressed() {
 
-    }
+    }*/
 
     public void saveQuestionAddNew (View v) {
 

@@ -51,8 +51,15 @@
         />
 
 
-    <LinearLayout
-        android:id="@+id/add_q_frgm_container"
+    <ListView
+        android:layout_width="fill_parent"
+        android:id="@+id/questions_list"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+<!--    <LinearLayout
+        android:id="@+id/questions_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -60,9 +67,9 @@
         android:paddingRight="16dp"
         android:paddingTop="10dp">
 
-    </LinearLayout>
+    </LinearLayout>-->
 
-    <LinearLayout
+<!--    <LinearLayout
         android:id="@+id/list_questions_frgm_container"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -72,7 +79,7 @@
         android:paddingRight="16dp"
         android:paddingTop="10dp">
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 
     <Button

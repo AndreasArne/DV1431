@@ -10,11 +10,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by mihai on 2014-12-02.
@@ -22,11 +26,18 @@ import java.io.Serializable;
 public class CreateQuiz extends Activity {
 
     Quiz quiz;
+    static public final int GET_QUESTION_CODE = 1;
+    ListView q_list;
+    ArrayList<String> list = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_quiz);
+        q_list = (ListView) findViewById(R.id.questions_list);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        q_list.setAdapter(adapter);
 
         //button listener
         Button addQ_btn = (Button) findViewById(R.id.add_question_btn);
@@ -39,11 +50,13 @@ public class CreateQuiz extends Activity {
                 String courseName = course.getText().toString();
                 EditText author = (EditText) findViewById(R.id.author_txt);
                 String authorName = author.getText().toString();
-                quiz = new Quiz(nameQuiz,courseName,authorName);
+                if (quiz == null)
+                    quiz = new Quiz(nameQuiz,courseName,authorName);
+
 
                 Intent i = new Intent(getApplicationContext(),AddQuestion.class);
                 i.putExtra("Quiz", quiz);
-                startActivity(i);
+                startActivityForResult(i, GET_QUESTION_CODE);
             }
         });
 
@@ -61,9 +74,44 @@ public class CreateQuiz extends Activity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GET_QUESTION_CODE) {
+            if (resultCode == RESULT_OK) {
+                Log.i("mytag", "IM BACK!");
+                this.quiz = (Quiz) data.getSerializableExtra("Quiz");
+                Log.i("mytag", "the quiz now has: "+this.quiz.getQuestions().size()+" questions");
+
+                // metadata on quiz can't be changed from now on
+                EditText quizNameTxt = (EditText) findViewById(R.id.quiz_name_txt);
+                quizNameTxt.setFocusable(false);
+                quizNameTxt.setFocusableInTouchMode(false);
+                quizNameTxt.setClickable(false);
+
+                // update UI with list of questions
+                list.clear();
+                ArrayList<Question> questions = quiz.getQuestions();
+                for (Question q:questions) {
+                    String name = q.getQuestionText();
+                    list.add(name);
+                }
+                adapter.notifyDataSetChanged();
+
+
+
+
+
+            }
+        }
+    }
+
+    @Override
     protected void onRestart() {
         super.onRestart();
-     Log.i("mytag", "resume CreateQuiz: quiz has " + quiz.getQuestions().size() + " questions. quiz name is: "+quiz.getName());
+        Log.i("mytag", "resume CreateQuiz: quiz has " + quiz.getQuestions().size() + " questions. quiz name is: "+quiz.getName());
+
+
+
+
 
     }
 }
