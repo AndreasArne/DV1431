@@ -1,9 +1,11 @@
 package se.bth.students.quizzard;
 
+import java.io.Serializable;
+
 /**
  * Created by mihai on 2014-12-02.
  */
-public class Answer {
+public class Answer implements Serializable {
     private String answerText = "some_answer";
     private boolean isRight = false;
 

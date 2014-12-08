@@ -1,16 +1,20 @@
 package se.bth.students.quizzard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by mihai on 2014-12-02.
  */
-public class Question {
-    private String question = "some_question";
+public class Question implements Serializable {
+
+
+    private String questionText = "some_question";
     private ArrayList<Answer> answers = new ArrayList<Answer>();
+    private boolean hasUniqueRightAnswer;
 
     public Question(String question) {
-        this.question = question;
+        this.questionText = question;
     }
 
     /**
@@ -25,6 +29,9 @@ public class Question {
 
     public ArrayList<Answer> getAnswers() {
         return this.answers;
+    }
+    public void attachAnswers(ArrayList<Answer> answers) {
+        this.answers = answers;
     }
 
     /**
@@ -41,10 +48,22 @@ public class Question {
         return rightAnswers;
     }
 
-    /**
+    public void setHasUniqueRightAnswer(boolean hasUniqueRightAnswer) {
+        this.hasUniqueRightAnswer = hasUniqueRightAnswer;
+    }
+
+    public String getQuestionText() {
+        return questionText;
+    }
+
+    public boolean hasUniqueRightAnswer() {
+        return hasUniqueRightAnswer;
+    }
+
+/*    *//**
      *
      * @return true if this question has only one right answer, false if it has multiple right answers
-     */
+     *//*
     public boolean hasUniqueRightAnswer() {
         boolean ret;
         int counter = 0;
@@ -58,7 +77,7 @@ public class Question {
         else ret = false;
 
         return ret;
-    }
+    }*/
 
 
 

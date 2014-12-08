@@ -49,6 +49,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addAnswer"
+        android:background="@drawable/button_background"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
 
         />
 
@@ -78,6 +81,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:onClick="saveQuestionAddNew"
+        android:background="@drawable/button_background"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
 
         />
 
@@ -90,6 +96,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="saveQuestion"
+        android:background="@drawable/button_background"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
 
         />
 
