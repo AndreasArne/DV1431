@@ -1,29 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TableRow
-        android:id="@+id/meta_quiz"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/quiz_name_txt"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:hint="Quiz name:" />
+
+        <EditText
+            android:id="@+id/course_txt"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:hint="Course:" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/author_txt"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:hint="some hint here" />
+            android:layout_weight="1"
+            android:hint="Author:" />
 
-        <EditText
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:hint="some hint here" />
-
-        <EditText
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:hint="some hint here" />
-    </TableRow>
+    </LinearLayout>
 
 
 
-</TableLayout>
+    <Button
+        android:id="@+id/add_question_btn"
+        android:text="Add question"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/add_q_frgm_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list_questions_frgm_container"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp">
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/save_quiz_btn"
+        android:text="Save quiz"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"/>
+
+</LinearLayout>
