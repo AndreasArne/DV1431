@@ -45,6 +45,8 @@ public class MainActivity extends Activity {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorListener = new ShakeListener();
         last = Calendar.getInstance();
+        writeQuizzes();
+        readQuizzes();
 
         mSensorListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
             public void onShake() {
@@ -63,6 +65,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"List quizzes!",Toast.LENGTH_SHORT).show();
                 Intent listInt = new Intent(MainActivity.this,ListQuizzes.class);
+                listInt.putExtra("quizzes",quizzes);
                 startActivity(listInt);
             }
         });
@@ -76,6 +79,7 @@ public class MainActivity extends Activity {
                 writeQuizzes();
                 readQuizzes();
                 Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);
+                createInt.putExtra("quizzes",quizzes);
                 startActivity(createInt);
             }
         });
@@ -135,8 +139,8 @@ public class MainActivity extends Activity {
              quizzes = (ArrayList<Quiz>) in.readObject();
 
              ///////
-             Toast.makeText(getApplicationContext(),quizzes.get(0).getAuthor() + quizzes.get(1).getCourse(),Toast.LENGTH_LONG).show();
-             Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
+             //Toast.makeText(getApplicationContext(),quizzes.get(0).getAuthor() + quizzes.get(1).getCourse(),Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
              ////////
 
              in.close();
