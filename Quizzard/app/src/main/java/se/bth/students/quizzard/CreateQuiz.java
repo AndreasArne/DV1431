@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +39,17 @@ public class CreateQuiz extends Activity {
         q_list = (ListView) findViewById(R.id.questions_list);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         q_list.setAdapter(adapter);
+
+        AdapterView.OnItemLongClickListener itemLongClickListener = new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView arg0, View arg1,
+                                           int arg2, long arg3) {
+                Toast.makeText(getBaseContext(), "Long Clicked:" + adapter.getItem(arg2) , Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        };
+        q_list.setOnItemLongClickListener(itemLongClickListener);
 
         //button listener
         Button addQ_btn = (Button) findViewById(R.id.add_question_btn);
@@ -95,10 +107,6 @@ public class CreateQuiz extends Activity {
                     list.add(name);
                 }
                 adapter.notifyDataSetChanged();
-
-
-
-
 
             }
         }
