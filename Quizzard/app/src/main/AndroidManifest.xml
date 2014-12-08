@@ -26,6 +26,11 @@
             android:label="CreateQuizze"
             android:parentActivityName="se.bth.students.quizzard.MainActivity" />
 
+        <activity
+            android:name="se.bth.students.quizzard.AddQuestion"
+            android:label="Add question"
+            android:parentActivityName="se.bth.students.quizzard.CreateQuiz" />
+
 
     </application>
 

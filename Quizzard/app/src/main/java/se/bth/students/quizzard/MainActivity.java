@@ -75,8 +75,8 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this,"Create quiz!",Toast.LENGTH_SHORT ).show();
                 writeQuizzes();
                 readQuizzes();
-               // Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);
-              //  startActivity(createInt);
+                Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);
+                startActivity(createInt);
             }
         });
 
