@@ -41,6 +41,10 @@ public class EditQuestion extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.edit_question);
+            RadioButton unique_btn = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
+            CheckBox multiple_cb = (CheckBox) findViewById(R.id.multiple_checkbox_edit);
+            unique_btn.setChecked(false);
+            multiple_cb.setChecked(false);
 
             question = (Question) getIntent().getSerializableExtra("Question");
             answers = question.getAnswers();
@@ -51,14 +55,14 @@ public class EditQuestion extends Activity {
             EditText questionTxt = (EditText) findViewById(R.id.question_text);
             String text = this.question.getQuestionText();
             questionTxt.setText(text);
-            if (this.question.hasUniqueRightAnswer()) {
+            if (this.question.getQuestionType() == Question.UNIQUE) {
                 RadioButton unique_btn = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
                 CheckBox multiple_cb = (CheckBox) findViewById(R.id.multiple_checkbox_edit);
                 unique_btn.setChecked(true);
                 multiple_cb.setChecked(false);
                 refreshAnswerListU();
             }
-            else {
+            else if (this.question.getQuestionType() == Question.MULTIPLE) {
                 CheckBox multiple_cb = (CheckBox) findViewById(R.id.multiple_checkbox_edit);
                 RadioButton unique_btn = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
                 unique_btn.setChecked(false);
@@ -73,11 +77,19 @@ public class EditQuestion extends Activity {
             Log.i("mytag", "entered saveQuestion!");
             EditText questionTxt = (EditText) findViewById(R.id.question_text);
             String questionStr = questionTxt.getText().toString();
+            RadioButton rb = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
 
             if (questionStr != null && !questionStr.equals("")) {
                 Question question = new Question(questionStr);
-                question.setHasUniqueRightAnswer(this.question_type == UNIQUE);
                 question.attachAnswers(this.answers);
+
+                // get question type
+                int type;
+                if (rb.isChecked())
+                    type = Question.UNIQUE;
+                else type = Question.MULTIPLE;
+                question.setQuestionType(type);
+
                 this.question = question;
                 saveAndFinish();
             }
@@ -148,7 +160,7 @@ public class EditQuestion extends Activity {
                     RadioButton rb = new RadioButton(this);
                     rb.setId(i);
                     rb.setText(this.answers.get(i).getAnswerText());
-                    if (this.question.hasUniqueRightAnswer() && answers.get(i).isRight()) {
+                    if (this.question.hasOneRightAnswer() && answers.get(i).isRight()) {
                         rb.setChecked(true);
                         this.radio_checked_id = i;
                     }
@@ -287,29 +299,29 @@ public class EditQuestion extends Activity {
             }
         }
 
-        public void onUniqueRightAnswer(View v) {
-            RadioButton rb = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
-            CheckBox cb = (CheckBox) findViewById(R.id.multiple_checkbox_edit);
+    public void onUniqueRightAnswer(View v) {
+        RadioButton rb = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
+        CheckBox cb = (CheckBox) findViewById(R.id.multiple_checkbox_edit);
 
-            cb.setChecked(false);
-            this.question_type = UNIQUE;
-            //this.question.setHasUniqueRightAnswer(true);
-            int rightAnswers = 0;
-            int right_id = -1;
-            for (int i=0; i<answers.size(); i++) {
-                if (answers.get(i).isRight()) {
-                    rightAnswers++;
-                    right_id = i;
-                }
+        cb.setChecked(false);
+        this.question_type = UNIQUE;
+        this.question.setQuestionType(Question.UNIQUE);
+        int rightAnswers = 0;
+        int right_id = -1;
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).isRight()) {
+                rightAnswers++;
+                right_id = i;
             }
-            if (rightAnswers == 1) {
-                this.radio_checked_id = right_id;
-            }
-            else this.radio_checked_id = -1;
-
-            this.rbs.clear();
-            refreshAnswerListU();
         }
+        if (rightAnswers == 1) {
+            this.radio_checked_id = right_id;
+        } else this.radio_checked_id = -1;
+
+        this.rbs.clear();
+        refreshAnswerListU();
+
+    }
 
         public void onMultipleRightAnswers(View v) {
             RadioButton rb = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
@@ -317,6 +329,7 @@ public class EditQuestion extends Activity {
             if (cb.isChecked()) { // activate MULTIPLE
                 rb.setChecked(false);
                 this.question_type = MULTIPLE;
+                this.question.setQuestionType(Question.MULTIPLE);
 
                 // set right answer
                 for (int i=0; i<this.answers.size(); i++) {
@@ -341,6 +354,7 @@ public class EditQuestion extends Activity {
             else { // activate UNIQUE
                 rb.setChecked(true);
                 this.question_type = UNIQUE;
+                this.question.setQuestionType(Question.UNIQUE);
                 int rightAnswers = 0;
                 int right_id = -1;
                 for (int i=0; i<answers.size(); i++) {

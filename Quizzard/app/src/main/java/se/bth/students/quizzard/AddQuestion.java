@@ -28,8 +28,8 @@ public class AddQuestion extends Activity  {
     ArrayList<RadioButton> rbs = new ArrayList<RadioButton>();
     ArrayList<CheckBox> cbs = new ArrayList<CheckBox>();
     int radio_checked_id = -1;
-    final int UNIQUE = 1;
-    final int MULTIPLE = 2;
+    final int UNIQUE = Question.UNIQUE;
+    final int MULTIPLE = Question.MULTIPLE;
     int question_type = UNIQUE;
     final int MAX_NR_ANSWERS = 4;
 
@@ -49,7 +49,7 @@ public class AddQuestion extends Activity  {
 
         if (questionStr != null && !questionStr.equals("")) {
             Question question = new Question(questionStr);
-            question.setHasUniqueRightAnswer(this.question_type == UNIQUE);
+            question.setQuestionType(this.question_type);
             question.attachAnswers(this.answers);
             this.quiz.addQuestion(question);
             Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
@@ -127,7 +127,7 @@ public class AddQuestion extends Activity  {
                 LinearLayout lineLayout = new LinearLayout(this);
                 lineLayout.setOrientation(LinearLayout.HORIZONTAL);
                 RadioButton rb = new RadioButton(this);
-                rb.setId(i); // ?
+                rb.setId(i);
                 rb.setText(this.answers.get(i).getAnswerText());
                 if (i == radio_checked_id)
                     rb.setChecked(true);

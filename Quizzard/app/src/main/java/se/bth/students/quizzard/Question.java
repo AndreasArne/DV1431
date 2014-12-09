@@ -11,7 +11,10 @@ public class Question implements Serializable {
 
     private String questionText = "some_question";
     private ArrayList<Answer> answers = new ArrayList<Answer>();
-    private boolean hasUniqueRightAnswer;
+    static public final int UNIQUE = 1;
+    static public final int MULTIPLE = 2;
+
+    private int questionType;
 
     public Question() {this.questionText = "N/A";}
 
@@ -50,15 +53,13 @@ public class Question implements Serializable {
         return rightAnswers;
     }
 
-    public void setHasUniqueRightAnswer(boolean hasUniqueRightAnswer) {
-        this.hasUniqueRightAnswer = hasUniqueRightAnswer;
-    }
+
 
     public String getQuestionText() {
         return questionText;
     }
 
-    public boolean hasUniqueRightAnswer() {
+    public boolean hasOneRightAnswer() {
         int right = 0;
         for (int i=0; right < 2 & i<answers.size(); i++) {
             if (answers.get(i).isRight())
@@ -67,6 +68,14 @@ public class Question implements Serializable {
         return (right == 1);
 
 
+    }
+
+    public int getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
     }
 
 /*    *//**

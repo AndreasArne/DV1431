@@ -32,6 +32,12 @@
             android:parentActivityName="se.bth.students.quizzard.CreateQuiz"
             android:launchMode="singleTop"/>
 
+        <activity
+            android:name="se.bth.students.quizzard.EditQuestion"
+            android:label="Edit question"
+            android:parentActivityName="se.bth.students.quizzard.CreateQuiz"
+            />
+
 
     </application>
 
