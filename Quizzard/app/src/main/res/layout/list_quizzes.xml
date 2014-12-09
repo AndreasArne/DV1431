@@ -12,16 +12,18 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.01">
+            android:layout_gravity="right"
+            >
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Local"
                 android:id="@+id/radioButtonLocal"
-                android:checked="true" />
+                android:checked="true"
+                android:paddingRight="10dp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -29,7 +31,8 @@
                 android:text="Server"
                 android:id="@+id/radioButtonServer"
                 android:checked="false"
-                android:layout_weight="0.01" />
+                android:paddingRight="10dp"
+                 />
 
             <Button
                 style="?android:attr/buttonStyleSmall"

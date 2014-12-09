@@ -40,7 +40,7 @@ public class Quiz implements Serializable{
     }
 
     public String getName() {
-        return this.course;
+        return this.name;
     }
 
     public String getAuthor() {
