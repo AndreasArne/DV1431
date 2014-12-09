@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -32,14 +38,39 @@ public class CreateQuiz extends Activity {
     ListView q_list;
     ArrayList<String> list = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    boolean NO_SAVE_TO_DISK = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_quiz);
+
+        // restore saved state
+        loadQuizFromDisk();
+/*        // now delete backup file from disk
+        File dir = getFilesDir();
+        File file = new File(dir, "create_quiz");
+        boolean deleted = file.delete();*/
+
+        // restore state of text fields
+        if (savedInstanceState != null) {
+            EditText quiz_name_txt = (EditText) findViewById(R.id.quiz_name_txt);
+            EditText course_txt = (EditText) findViewById(R.id.course_txt);
+            EditText author_txt = (EditText) findViewById(R.id.author_txt);
+
+            String quiz_name = savedInstanceState.getString("quiz_name");
+            String course = savedInstanceState.getString("course");
+            String author = savedInstanceState.getString("author");
+
+            quiz_name_txt.setText(quiz_name);
+            course_txt.setText(course);
+            author_txt.setText(author);
+        }
+
         q_list = (ListView) findViewById(R.id.questions_list);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         q_list.setAdapter(adapter);
+        updateUIList();
 
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
@@ -86,7 +117,7 @@ public class CreateQuiz extends Activity {
                     String courseName = course.getText().toString();
                     EditText author = (EditText) findViewById(R.id.author_txt);
                     String authorName = author.getText().toString();
-                    if (quiz == null)
+                    if (quiz == null || quiz.getName().equals("N/A")) // make new quiz obj
                         quiz = new Quiz(nameQuiz, courseName, authorName);
 
 
@@ -102,12 +133,24 @@ public class CreateQuiz extends Activity {
     }
 
     public void saveQuiz(View v) {
-        if (this.quiz != null && this.quiz.getName() != null && !this.quiz.getName().equals("")) {
+        EditText quiz_name_txt = (EditText) findViewById(R.id.quiz_name_txt);
+        String quizName = quiz_name_txt.getText().toString();
+
+        if (!quizName.equals("") && !quizName.equals("N/A")) {
+            if (quiz == null) {
+                EditText course_txt = (EditText) findViewById(R.id.course_txt);
+                String course = course_txt.getText().toString();
+                EditText author_txt = (EditText) findViewById(R.id.author_txt);
+                String author = author_txt.getText().toString();
+                quiz = new Quiz(quizName, course, author);
+            }
             Intent resultIntent = new Intent();
             resultIntent.putExtra("Quiz", this.quiz);
             setResult(Activity.RESULT_OK, resultIntent);
+            NO_SAVE_TO_DISK = true;
             finish();
         }
+        else Toast.makeText(getBaseContext(), "Quiz needs at least a title." , Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -169,21 +212,94 @@ public class CreateQuiz extends Activity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i("mytag", "resume CreateQuiz: quiz has " + quiz.getQuestions().size() + " questions. quiz name is: "+quiz.getName());
+    public void onBackPressed() {
+        this.NO_SAVE_TO_DISK = true;
+        finish();
+    }
+
+    @Override protected void onDestroy() {
+        if (!NO_SAVE_TO_DISK && quiz != null && !quiz.getName().equals("N/A")) {
+            saveQuizToDisk();
+        }
+        else {
+            boolean delete = deleteBackupFile();
+            NO_SAVE_TO_DISK = false;
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        String quiz_name = ((EditText) findViewById(R.id.quiz_name_txt)).getText().toString();
+        String course = ((EditText) findViewById(R.id.course_txt)).getText().toString();
+        String author = ((EditText) findViewById(R.id.author_txt)).getText().toString();
+        savedInstanceState.putString("quiz_name", quiz_name);
+        savedInstanceState.putString("course", course);
+        savedInstanceState.putString("author", author);
+        super.onSaveInstanceState(savedInstanceState);
+
     }
 
     private void updateUIList() {
-
-        // update UI with list of questions
-        list.clear();
-        ArrayList<Question> questions = quiz.getQuestions();
-        for (Question q : questions) {
-            String name = q.getQuestionText();
-            list.add(name);
+        if(quiz != null) {
+            // update UI with list of questions
+            list.clear();
+            ArrayList<Question> questions = quiz.getQuestions();
+            for (Question q : questions) {
+                String name = q.getQuestionText();
+                list.add(name);
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+    }
+
+    private void saveQuizToDisk() {
+        File dir = getFilesDir();
+        File file = new File (dir, "create_quiz");
+        try{
+
+            if(!file.exists())
+                file.createNewFile();
+
+            FileOutputStream fout = getApplicationContext().openFileOutput(file.getName(), Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fout);
+
+            //writes searialized arraylist, containing quiz objects, to file
+            out.writeObject(quiz);
+
+            out.close();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    private void loadQuizFromDisk() {
+        File dir = getFilesDir();
+        File file = new File (dir, "create_quiz");
+
+        try {
+
+            FileInputStream fin = getApplicationContext().openFileInput(file.getName());
+            ObjectInputStream in = new ObjectInputStream(fin);
+
+            //reads in an arraylist, containing quiz objects.
+            quiz = (Quiz) in.readObject();
+
+            in.close();
+        }
+        catch(Exception ex){
+        }
+
+    }
+
+    private boolean deleteBackupFile() {
+        File dir = getFilesDir();
+        File file = new File(dir, "create_quiz");
+        boolean deleted = file.delete();
+        return deleted;
+
     }
 
 }
