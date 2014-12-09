@@ -53,15 +53,15 @@ public class AddQuestion extends Activity  {
             question.attachAnswers(this.answers);
             this.quiz.addQuestion(question);
             Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
-            saveAndFinish();
+            saveAndFinish(Activity.RESULT_OK);
         }
         else Toast.makeText(getBaseContext(), "You must write the text of the question." , Toast.LENGTH_SHORT).show();
     }
 
-    private void saveAndFinish() {
+    private void saveAndFinish(int code) {
         Intent resultIntent = new Intent();
         resultIntent.putExtra("Quiz", this.quiz);
-        setResult(Activity.RESULT_OK, resultIntent);
+        setResult(code, resultIntent);
 
         finish();
     }
@@ -72,6 +72,19 @@ public class AddQuestion extends Activity  {
     }*/
 
     public void saveQuestionAddNew (View v) {
+        Log.i("mytag", "entered saveQuestion!");
+        EditText questionTxt = (EditText) findViewById(R.id.question_text);
+        String questionStr = questionTxt.getText().toString();
+
+        if (questionStr != null && !questionStr.equals("")) {
+            Question question = new Question(questionStr);
+            question.setQuestionType(this.question_type);
+            question.attachAnswers(this.answers);
+            this.quiz.addQuestion(question);
+            Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
+            saveAndFinish(Activity.RESULT_FIRST_USER);
+        }
+        else Toast.makeText(getBaseContext(), "You must write the text of the question." , Toast.LENGTH_SHORT).show();
 
     }
 

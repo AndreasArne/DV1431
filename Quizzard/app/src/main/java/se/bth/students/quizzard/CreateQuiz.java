@@ -141,8 +141,29 @@ public class CreateQuiz extends Activity {
                     }
                     adapter.notifyDataSetChanged();
 
+                    Toast.makeText(getBaseContext(), "New question saved" , Toast.LENGTH_SHORT).show();
+
                 }
-            } else if (requestCode >= 0 && requestCode < quiz.getQuestions().size()) { // an edited question
+                else if (resultCode == RESULT_FIRST_USER) { // save & add new question button was pressed
+                    // store the result
+                    this.quiz = (Quiz) data.getSerializableExtra("Quiz");
+
+                    // update UI with list of questions
+                    list.clear();
+                    ArrayList<Question> questions = quiz.getQuestions();
+                    for (Question q : questions) {
+                        String name = q.getQuestionText();
+                        list.add(name);
+                    }
+                    adapter.notifyDataSetChanged();
+
+                    Toast.makeText(getBaseContext(), "New question saved" , Toast.LENGTH_SHORT).show();
+
+                    // start new AddQuestion activity
+                    Button addQuestion_btn = (Button) findViewById(R.id.add_question_btn);
+                    addQuestion_btn.performClick(); // simulates click of button
+                }
+            } else if (requestCode >= 0 && requestCode < quiz.getQuestions().size()) { // an edited question was sent back
                 Question question_edited = (Question) data.getSerializableExtra("Question");
                 if (!question_edited.getQuestionText().equals("N/A")) {
                     ArrayList<Question> questions = quiz.getQuestions();
@@ -158,6 +179,8 @@ public class CreateQuiz extends Activity {
                         list.add(name);
                     }
                     adapter.notifyDataSetChanged();
+
+                    Toast.makeText(getBaseContext(), "Question was edited successfully" , Toast.LENGTH_SHORT).show();
 
                 }
             }
