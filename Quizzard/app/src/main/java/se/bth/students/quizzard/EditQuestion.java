@@ -93,17 +93,23 @@ public class EditQuestion extends Activity {
                 question.setQuestionType(type);
 
                 this.question = question;
-                saveAndFinish();
+                saveAndFinish(Activity.RESULT_OK);
             }
             else Toast.makeText(getBaseContext(), "You must write the text of the question.", Toast.LENGTH_SHORT).show();
         }
 
-        private void saveAndFinish() {
+        private void saveAndFinish(int code) {
             Intent resultIntent = new Intent();
             resultIntent.putExtra("Question", this.question);
-            setResult(Activity.RESULT_OK, resultIntent);
+            setResult(code, resultIntent);
             finish();
         }
+
+    public void deleteQuestion(View v) {
+        Question defaultQuestion = new Question();
+        this.question = defaultQuestion;
+        saveAndFinish(Activity.RESULT_FIRST_USER+1);
+    }
 
 
 

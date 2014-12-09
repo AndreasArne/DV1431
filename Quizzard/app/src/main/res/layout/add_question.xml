@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/add_answer_btn"
-        android:text="Add answer"
+        android:text="ADD ANSWER"
         android:layout_gravity="right"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
@@ -75,7 +75,7 @@
         android:baselineAligned="false">
     <Button
         android:id="@+id/save_question_and_quiz_btn"
-        android:text="Save question and add another"
+        android:text="SAVE QUESTION AND ADD NEW"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
 
     <Button
         android:id="@+id/save_question_btn"
-        android:text="Save question"
+        android:text="SAVE QUESTION"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"

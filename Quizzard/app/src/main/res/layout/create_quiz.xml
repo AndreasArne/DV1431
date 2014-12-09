@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/add_question_btn"
-        android:text="Add question"
+        android:text="ADD QUESTION"
         android:layout_gravity="right"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
@@ -61,33 +61,20 @@
         android:layout_weight="1"
         />
 
-<!--    <LinearLayout
-        android:id="@+id/questions_container"
-        android:layout_width="fill_parent"
+<!--    <Button
+        android:id="@+id/save_quiz_draft_btn"
+        android:text="SAVE QUIZ AS DRAFT"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="10dp">
-
-    </LinearLayout>-->
-
-<!--    <LinearLayout
-        android:id="@+id/list_questions_frgm_container"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="10dp">
-
-    </LinearLayout>-->
-
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_background"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"/>-->
 
     <Button
         android:id="@+id/save_quiz_btn"
-        android:text="Save quiz"
+        android:text="SAVE QUIZ"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

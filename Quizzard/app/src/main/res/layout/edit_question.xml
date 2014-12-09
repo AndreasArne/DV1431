@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/add_answer_btn"
-        android:text="Add answer"
+        android:text="ADD ANSWER"
         android:layout_gravity="right"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
@@ -76,13 +76,28 @@
 
         <Button
             android:id="@+id/save_question_btn"
-            android:text="Save question"
+            android:text="SAVE QUESTION"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="saveQuestion"
+            android:background="@drawable/button_background"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+
+            />
+
+        <Button
+            android:id="@+id/delete_question_btn"
+            android:text="DELETE QUESTION"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="deleteQuestion"
             android:background="@drawable/button_background"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"

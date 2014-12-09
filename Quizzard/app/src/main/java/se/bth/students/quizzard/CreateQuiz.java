@@ -41,9 +41,9 @@ public class CreateQuiz extends Activity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         q_list.setAdapter(adapter);
 
-        AdapterView.OnItemLongClickListener itemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView arg0, View arg1,
+            public void onItemClick(AdapterView arg0, View arg1,
                                            int arg2, long arg3) {
               //  Toast.makeText(getBaseContext(), "Long Clicked:" + adapter.getItem(arg2) , Toast.LENGTH_SHORT).show();
                 // get question obj
@@ -68,12 +68,9 @@ public class CreateQuiz extends Activity {
                     i.putExtra("Question", questionToSend);
                     startActivityForResult(i, found);
                 }
-
-
-                return false;
             }
         };
-        q_list.setOnItemLongClickListener(itemLongClickListener);
+        q_list.setOnItemClickListener(itemClickListener);
 
         //button listener
         Button addQ_btn = (Button) findViewById(R.id.add_question_btn);
@@ -109,11 +106,9 @@ public class CreateQuiz extends Activity {
             @Override
             public void onClick(View v) {
 
-
-//                Intent createInt = new Intent(getApplicationContext(),AddQuestion.class);
-//                startActivity(createInt);
             }
         });
+
     }
 
     @Override
@@ -165,7 +160,7 @@ public class CreateQuiz extends Activity {
                 }
             } else if (requestCode >= 0 && requestCode < quiz.getQuestions().size()) { // an edited question was sent back
                 Question question_edited = (Question) data.getSerializableExtra("Question");
-                if (!question_edited.getQuestionText().equals("N/A")) {
+                if (resultCode != Activity.RESULT_FIRST_USER+1) { // question to be edited
                     ArrayList<Question> questions = quiz.getQuestions();
                     questions.set(requestCode, question_edited);
                     quiz.attachQuestions(questions);
@@ -182,6 +177,24 @@ public class CreateQuiz extends Activity {
 
                     Toast.makeText(getBaseContext(), "Question was edited successfully" , Toast.LENGTH_SHORT).show();
 
+                }
+                else { // question to be deleted
+
+                    // delete question
+                    ArrayList<Question> questions = quiz.getQuestions();
+                    questions.remove(requestCode);
+                    quiz.attachQuestions(questions);
+
+                    // update UI with list of questions
+                    list.clear();
+                    ArrayList<Question> questions2 = quiz.getQuestions();
+                    for (Question q : questions2) {
+                        String name = q.getQuestionText();
+                        list.add(name);
+                    }
+                    adapter.notifyDataSetChanged();
+
+                    Toast.makeText(getBaseContext(), "Question was deleted successfully" , Toast.LENGTH_SHORT).show();
                 }
             }
         }
