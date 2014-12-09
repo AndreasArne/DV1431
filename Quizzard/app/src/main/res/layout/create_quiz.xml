@@ -79,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:onClick="saveQuiz"
         android:background="@drawable/button_background"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"/>

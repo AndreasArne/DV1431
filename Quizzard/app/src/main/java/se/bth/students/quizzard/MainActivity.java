@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
     private Calendar last;
     private Calendar now;
     private ArrayList<Quiz> quizzes;
+    static public final int GET_NEW_QUIZ_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,8 @@ public class MainActivity extends Activity {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorListener = new ShakeListener();
         last = Calendar.getInstance();
-        writeQuizzes();
-        readQuizzes();
+        //writeQuizzes();
+
 
         mSensorListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
             public void onShake() {
@@ -80,7 +81,7 @@ public class MainActivity extends Activity {
                 readQuizzes();
                 Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);
                 createInt.putExtra("quizzes",quizzes);
-                startActivity(createInt);
+                startActivityForResult(createInt, GET_NEW_QUIZ_CODE);
             }
         });
 
@@ -92,20 +93,22 @@ public class MainActivity extends Activity {
         mSensorManager.registerListener(mSensorListener,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_UI);
+        readQuizzes();
     }
 
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
         super.onPause();
+        writeQuizzes();
     }
 
     private void writeQuizzes(){
         //////////
-        Quiz q1 = new Quiz("andreas 1","hej 1","koll 1");
-        Quiz q2 = new Quiz("andreas 2","hej 2","koll 2");
-        this.quizzes.add(q1);
-        this.quizzes.add(q2);
+        //Quiz q1 = new Quiz("andreas 1","hej 1","koll 1");
+        //Quiz q2 = new Quiz("andreas 2","hej 2","koll 2");
+        //this.quizzes.add(q1);
+        //this.quizzes.add(q2);
         //////////
 
         try{
@@ -149,6 +152,19 @@ public class MainActivity extends Activity {
 
          }
      }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GET_NEW_QUIZ_CODE) { // new quiz to be saved
+                Quiz quizToBeSaved = (Quiz) data.getSerializableExtra("Quiz");
+                this.quizzes.add(quizToBeSaved);
+            }
+        }
+
+
+
+    }
 
   /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {

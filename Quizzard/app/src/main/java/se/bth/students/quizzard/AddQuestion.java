@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class AddQuestion extends Activity  {
 
-    Quiz quiz;
+    //Quiz quiz;
     Question question;
 
     ArrayList<Answer> answers = new ArrayList<Answer>();
@@ -38,8 +38,8 @@ public class AddQuestion extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_question);
 
-        this.quiz = (Quiz) getIntent().getSerializableExtra("Quiz");
-        Log.i("mytag", "Received quiz: "+quiz.getName()+" in AddQuestion from CreateQuiz");
+        //this.quiz = (Quiz) getIntent().getSerializableExtra("Quiz");
+       // Log.i("mytag", "Received quiz: "+quiz.getName()+" in AddQuestion from CreateQuiz");
     }
 
     public void saveQuestion(View v) {
@@ -51,19 +51,23 @@ public class AddQuestion extends Activity  {
             Question question = new Question(questionStr);
             question.setQuestionType(this.question_type);
             question.attachAnswers(this.answers);
-            this.quiz.addQuestion(question);
-            Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
+            this.question = question;
+           // this.quiz.addQuestion(question);
+            //Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
             saveAndFinish(Activity.RESULT_OK);
         }
         else Toast.makeText(getBaseContext(), "You must write the text of the question." , Toast.LENGTH_SHORT).show();
     }
 
     private void saveAndFinish(int code) {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("Quiz", this.quiz);
-        setResult(code, resultIntent);
+        if (this.question != null) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("Question", this.question);
+            setResult(code, resultIntent);
+        }
 
         finish();
+
     }
 
  /*   @Override
@@ -80,8 +84,8 @@ public class AddQuestion extends Activity  {
             Question question = new Question(questionStr);
             question.setQuestionType(this.question_type);
             question.attachAnswers(this.answers);
-            this.quiz.addQuestion(question);
-            Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
+           // this.quiz.addQuestion(question);
+            //Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
             saveAndFinish(Activity.RESULT_FIRST_USER);
         }
         else Toast.makeText(getBaseContext(), "You must write the text of the question." , Toast.LENGTH_SHORT).show();

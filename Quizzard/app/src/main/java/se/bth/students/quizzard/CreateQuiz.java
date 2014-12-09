@@ -91,35 +91,35 @@ public class CreateQuiz extends Activity {
 
 
                     Intent i = new Intent(getApplicationContext(), AddQuestion.class);
-                    i.putExtra("Quiz", quiz);
+                    //i.putExtra("Quiz", quiz);
                     // find out index of next question
-                    int index = quiz.getQuestions().size();
+                    int index = quiz.getQuestions().size();  //next free pos in questions array
                     startActivityForResult(i, index);
                 }
                 else Toast.makeText(getBaseContext(), "Your quiz must have a name" , Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        //button listener
-        Button saveQ_btn = (Button) findViewById(R.id.save_quiz_btn);
-       saveQ_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
+    public void saveQuiz(View v) {
+        if (this.quiz != null && this.quiz.getName() != null && !this.quiz.getName().equals("")) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("Quiz", this.quiz);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         int index = quiz.getQuestions().size();
         if (resultCode != Activity.RESULT_CANCELED) {
-            if (requestCode == index) { // if index is next one after size of questions, it means it is a new question
+            if (requestCode == index) { // a new question
                 if (resultCode == RESULT_OK) {
                     Log.i("mytag", "IM BACK!");
-                    this.quiz = (Quiz) data.getSerializableExtra("Quiz");
-                    Log.i("mytag", "the quiz now has: " + this.quiz.getQuestions().size() + " questions");
+                    Question newQuestion = (Question) data.getSerializableExtra("Question");
+                    this.quiz.addQuestion(newQuestion);
+                    //Log.i("mytag", "the quiz now has: " + this.quiz.getQuestions().size() + " questions");
 
                     // metadata on quiz can't be changed from now on
                     EditText quizNameTxt = (EditText) findViewById(R.id.quiz_name_txt);
@@ -127,31 +127,16 @@ public class CreateQuiz extends Activity {
                     quizNameTxt.setFocusableInTouchMode(false);
                     quizNameTxt.setClickable(false);
 
-                    // update UI with list of questions
-                    list.clear();
-                    ArrayList<Question> questions = quiz.getQuestions();
-                    for (Question q : questions) {
-                        String name = q.getQuestionText();
-                        list.add(name);
-                    }
-                    adapter.notifyDataSetChanged();
-
+                    updateUIList();
                     Toast.makeText(getBaseContext(), "New question saved" , Toast.LENGTH_SHORT).show();
 
                 }
                 else if (resultCode == RESULT_FIRST_USER) { // save & add new question button was pressed
                     // store the result
-                    this.quiz = (Quiz) data.getSerializableExtra("Quiz");
+                    Question newQuestion = (Question) data.getSerializableExtra("Question");
+                    quiz.addQuestion(newQuestion);
 
-                    // update UI with list of questions
-                    list.clear();
-                    ArrayList<Question> questions = quiz.getQuestions();
-                    for (Question q : questions) {
-                        String name = q.getQuestionText();
-                        list.add(name);
-                    }
-                    adapter.notifyDataSetChanged();
-
+                    updateUIList();
                     Toast.makeText(getBaseContext(), "New question saved" , Toast.LENGTH_SHORT).show();
 
                     // start new AddQuestion activity
@@ -164,17 +149,7 @@ public class CreateQuiz extends Activity {
                     ArrayList<Question> questions = quiz.getQuestions();
                     questions.set(requestCode, question_edited);
                     quiz.attachQuestions(questions);
-
-
-                    // update UI with list of questions
-                    list.clear();
-                    ArrayList<Question> questions2 = quiz.getQuestions();
-                    for (Question q : questions2) {
-                        String name = q.getQuestionText();
-                        list.add(name);
-                    }
-                    adapter.notifyDataSetChanged();
-
+                    updateUIList();
                     Toast.makeText(getBaseContext(), "Question was edited successfully" , Toast.LENGTH_SHORT).show();
 
                 }
@@ -186,14 +161,7 @@ public class CreateQuiz extends Activity {
                     quiz.attachQuestions(questions);
 
                     // update UI with list of questions
-                    list.clear();
-                    ArrayList<Question> questions2 = quiz.getQuestions();
-                    for (Question q : questions2) {
-                        String name = q.getQuestionText();
-                        list.add(name);
-                    }
-                    adapter.notifyDataSetChanged();
-
+                    updateUIList();
                     Toast.makeText(getBaseContext(), "Question was deleted successfully" , Toast.LENGTH_SHORT).show();
                 }
             }
@@ -204,10 +172,18 @@ public class CreateQuiz extends Activity {
     protected void onRestart() {
         super.onRestart();
         Log.i("mytag", "resume CreateQuiz: quiz has " + quiz.getQuestions().size() + " questions. quiz name is: "+quiz.getName());
-
-
-
-
-
     }
+
+    private void updateUIList() {
+
+        // update UI with list of questions
+        list.clear();
+        ArrayList<Question> questions = quiz.getQuestions();
+        for (Question q : questions) {
+            String name = q.getQuestionText();
+            list.add(name);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
 }
