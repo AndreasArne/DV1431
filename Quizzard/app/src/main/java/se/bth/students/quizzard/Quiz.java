@@ -15,7 +15,13 @@ public class Quiz implements Serializable{
     private String author = "some_author";
     boolean finished = false; // if false this quiz has still to be completed with new questions, right answers etc.
 
-    public Quiz(String course, String name, String author) {
+    public Quiz() {
+        this.course = "N/A";
+        this.name = "N/A";
+        this.author = "N/A";
+    }
+
+    public Quiz(String name, String course, String author) {
         this.course = course;
         this.name = name;
         this.author = author;

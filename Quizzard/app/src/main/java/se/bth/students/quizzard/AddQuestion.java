@@ -84,6 +84,7 @@ public class AddQuestion extends Activity  {
             Question question = new Question(questionStr);
             question.setQuestionType(this.question_type);
             question.attachAnswers(this.answers);
+            this.question = question;
            // this.quiz.addQuestion(question);
             //Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
             saveAndFinish(Activity.RESULT_FIRST_USER);

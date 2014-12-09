@@ -42,6 +42,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         quizzes = new ArrayList<Quiz>();
 
+        //deleteQuizzesFromDisk(); // DEBUGGING! DELETE LATER
+        readQuizzes();
+
         //for shake event
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorListener = new ShakeListener();
@@ -77,8 +80,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this,"Create quiz!",Toast.LENGTH_SHORT ).show();
-                writeQuizzes();
-                readQuizzes();
+                //writeQuizzes();
+                //readQuizzes();
                 Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);
                 createInt.putExtra("quizzes",quizzes);
                 startActivityForResult(createInt, GET_NEW_QUIZ_CODE);
@@ -93,14 +96,14 @@ public class MainActivity extends Activity {
         mSensorManager.registerListener(mSensorListener,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_UI);
-        readQuizzes();
+
     }
 
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
-        super.onPause();
         writeQuizzes();
+        super.onPause();
     }
 
     private void writeQuizzes(){
@@ -111,8 +114,12 @@ public class MainActivity extends Activity {
         //this.quizzes.add(q2);
         //////////
 
+        File dir = getFilesDir();
+        File file = new File (dir, "test");
+
+
         try{
-        File file = new File(getFilesDir() + "test");
+
         if(!file.exists())
            file.createNewFile();
 
@@ -133,7 +140,8 @@ public class MainActivity extends Activity {
      private void readQuizzes(){
 
          try {
-             File file = new File(getFilesDir() + "test");
+             File dir = getFilesDir();
+             File file = new File(dir, "test");
 
              FileInputStream fin = getApplicationContext().openFileInput(file.getName());
              ObjectInputStream in = new ObjectInputStream(fin);
@@ -187,4 +195,12 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }*/
+
+
+    // DEBUGGING PURPOSES ONLY
+    private void deleteQuizzesFromDisk() {
+        File dir = getFilesDir();
+        File file = new File(dir, "test");
+        boolean deleted = file.delete();
+    }
 }
