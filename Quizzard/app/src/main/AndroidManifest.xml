@@ -24,7 +24,8 @@
         <activity
             android:name="se.bth.students.quizzard.CreateQuiz"
             android:label="Create Quiz"
-            android:parentActivityName="se.bth.students.quizzard.MainActivity" />
+            android:parentActivityName="se.bth.students.quizzard.MainActivity"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name="se.bth.students.quizzard.AddQuestion"

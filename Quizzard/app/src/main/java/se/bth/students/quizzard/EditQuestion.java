@@ -60,6 +60,7 @@ public class EditQuestion extends Activity {
                 CheckBox multiple_cb = (CheckBox) findViewById(R.id.multiple_checkbox_edit);
                 unique_btn.setChecked(true);
                 multiple_cb.setChecked(false);
+                this.question_type = Question.UNIQUE;
                 refreshAnswerListU();
             }
             else if (this.question.getQuestionType() == Question.MULTIPLE) {
@@ -67,6 +68,7 @@ public class EditQuestion extends Activity {
                 RadioButton unique_btn = (RadioButton) findViewById(R.id.unique_radiobtn_edit);
                 unique_btn.setChecked(false);
                 multiple_cb.setChecked(true);
+                this.question_type = Question.MULTIPLE;
                 refreshAnswerListM();
             }
 
