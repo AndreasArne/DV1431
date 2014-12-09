@@ -21,6 +21,10 @@ public class Quiz implements Serializable{
         this.author = author;
     }
 
+    public void attachQuestions(ArrayList<Question> questions) {
+        this.questions = questions;
+    }
+
     public ArrayList<Question> getQuestions() {
         return this.questions;
     }

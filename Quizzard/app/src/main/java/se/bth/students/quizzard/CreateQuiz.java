@@ -27,7 +27,8 @@ import java.util.ArrayList;
 public class CreateQuiz extends Activity {
 
     Quiz quiz;
-    static public final int GET_QUESTION_CODE = 1;
+    //static public final int NEW_QUESTION_CODE = 1;
+    //static public final int EDITED_QUESTION_CODE = 2;
     ListView q_list;
     ArrayList<String> list = new ArrayList<String>();
     ArrayAdapter<String> adapter;
@@ -44,7 +45,30 @@ public class CreateQuiz extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView arg0, View arg1,
                                            int arg2, long arg3) {
-                Toast.makeText(getBaseContext(), "Long Clicked:" + adapter.getItem(arg2) , Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getBaseContext(), "Long Clicked:" + adapter.getItem(arg2) , Toast.LENGTH_SHORT).show();
+                // get question obj
+                Question questionToSend = null;
+                String question_txt = adapter.getItem(arg2);
+                int found = -1;
+                ArrayList<Question> questions = quiz.getQuestions();
+                if (questions != null) {
+                    for (int i = 0; found == -1 && i < questions.size(); i++) {
+                        if (question_txt.equals(questions.get(i).getQuestionText())) {
+                            found = i;
+                        }
+                    }
+                }
+                if (found != -1 && questions != null) {
+                    questionToSend = questions.get(found);
+                }
+
+                // start the EditQuestion activity
+                if (questionToSend != null) {
+                    Intent i = new Intent(getApplicationContext(), EditQuestion.class);
+                    i.putExtra("Question", questionToSend);
+                    startActivityForResult(i, found);
+                }
+
 
                 return false;
             }
@@ -58,17 +82,24 @@ public class CreateQuiz extends Activity {
             public void onClick(View v) {
                 EditText name = (EditText) findViewById(R.id.quiz_name_txt);
                 String nameQuiz = name.getText().toString();
-                EditText course = (EditText) findViewById(R.id.course_txt);
-                String courseName = course.getText().toString();
-                EditText author = (EditText) findViewById(R.id.author_txt);
-                String authorName = author.getText().toString();
-                if (quiz == null)
-                    quiz = new Quiz(nameQuiz,courseName,authorName);
+
+                if (nameQuiz != null && !nameQuiz.equals("")) {
+
+                    EditText course = (EditText) findViewById(R.id.course_txt);
+                    String courseName = course.getText().toString();
+                    EditText author = (EditText) findViewById(R.id.author_txt);
+                    String authorName = author.getText().toString();
+                    if (quiz == null)
+                        quiz = new Quiz(nameQuiz, courseName, authorName);
 
 
-                Intent i = new Intent(getApplicationContext(),AddQuestion.class);
-                i.putExtra("Quiz", quiz);
-                startActivityForResult(i, GET_QUESTION_CODE);
+                    Intent i = new Intent(getApplicationContext(), AddQuestion.class);
+                    i.putExtra("Quiz", quiz);
+                    // find out index of next question
+                    int index = quiz.getQuestions().size();
+                    startActivityForResult(i, index);
+                }
+                else Toast.makeText(getBaseContext(), "Your quiz must have a name" , Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -87,27 +118,48 @@ public class CreateQuiz extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == GET_QUESTION_CODE) {
-            if (resultCode == RESULT_OK) {
-                Log.i("mytag", "IM BACK!");
-                this.quiz = (Quiz) data.getSerializableExtra("Quiz");
-                Log.i("mytag", "the quiz now has: "+this.quiz.getQuestions().size()+" questions");
+        int index = quiz.getQuestions().size();
+        if (resultCode != Activity.RESULT_CANCELED) {
+            if (requestCode == index) { // if index is next one after size of questions, it means it is a new question
+                if (resultCode == RESULT_OK) {
+                    Log.i("mytag", "IM BACK!");
+                    this.quiz = (Quiz) data.getSerializableExtra("Quiz");
+                    Log.i("mytag", "the quiz now has: " + this.quiz.getQuestions().size() + " questions");
 
-                // metadata on quiz can't be changed from now on
-                EditText quizNameTxt = (EditText) findViewById(R.id.quiz_name_txt);
-                quizNameTxt.setFocusable(false);
-                quizNameTxt.setFocusableInTouchMode(false);
-                quizNameTxt.setClickable(false);
+                    // metadata on quiz can't be changed from now on
+                    EditText quizNameTxt = (EditText) findViewById(R.id.quiz_name_txt);
+                    quizNameTxt.setFocusable(false);
+                    quizNameTxt.setFocusableInTouchMode(false);
+                    quizNameTxt.setClickable(false);
 
-                // update UI with list of questions
-                list.clear();
-                ArrayList<Question> questions = quiz.getQuestions();
-                for (Question q:questions) {
-                    String name = q.getQuestionText();
-                    list.add(name);
+                    // update UI with list of questions
+                    list.clear();
+                    ArrayList<Question> questions = quiz.getQuestions();
+                    for (Question q : questions) {
+                        String name = q.getQuestionText();
+                        list.add(name);
+                    }
+                    adapter.notifyDataSetChanged();
+
                 }
-                adapter.notifyDataSetChanged();
+            } else if (requestCode >= 0 && requestCode < quiz.getQuestions().size()) { // an edited question
+                Question question_edited = (Question) data.getSerializableExtra("Question");
+                if (!question_edited.getQuestionText().equals("N/A")) {
+                    ArrayList<Question> questions = quiz.getQuestions();
+                    questions.set(requestCode, question_edited);
+                    quiz.attachQuestions(questions);
 
+
+                    // update UI with list of questions
+                    list.clear();
+                    ArrayList<Question> questions2 = quiz.getQuestions();
+                    for (Question q : questions2) {
+                        String name = q.getQuestionText();
+                        list.add(name);
+                    }
+                    adapter.notifyDataSetChanged();
+
+                }
             }
         }
     }

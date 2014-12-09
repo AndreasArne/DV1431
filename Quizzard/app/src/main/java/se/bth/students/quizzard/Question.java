@@ -13,6 +13,8 @@ public class Question implements Serializable {
     private ArrayList<Answer> answers = new ArrayList<Answer>();
     private boolean hasUniqueRightAnswer;
 
+    public Question() {this.questionText = "N/A";}
+
     public Question(String question) {
         this.questionText = question;
     }
@@ -57,7 +59,14 @@ public class Question implements Serializable {
     }
 
     public boolean hasUniqueRightAnswer() {
-        return hasUniqueRightAnswer;
+        int right = 0;
+        for (int i=0; right < 2 & i<answers.size(); i++) {
+            if (answers.get(i).isRight())
+                right++;
+        }
+        return (right == 1);
+
+
     }
 
 /*    *//**
