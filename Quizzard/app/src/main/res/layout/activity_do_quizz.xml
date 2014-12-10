@@ -5,61 +5,40 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="How long is a piece of string?"
-        android:id="@+id/textView3"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="42 m"
-        android:id="@+id/radioButton"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3" />
+    <!--   <android.support.v4.view.ViewPager
+       android:id="@+id/doQuizViewpager"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent" />
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="12 mm"
-        android:id="@+id/radioButton2"
-        android:layout_below="@+id/radioButton"
-        android:layout_alignLeft="@+id/radioButton"
-        android:layout_alignStart="@+id/radioButton" />
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="-5 ft"
-        android:id="@+id/radioButton3"
-        android:layout_below="@+id/radioButton2"
-        android:layout_alignLeft="@+id/radioButton2"
-        android:layout_alignStart="@+id/radioButton2" />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textAppearance="?android:attr/textAppearanceLarge"
+           android:text="Large Text"
+           android:id="@+id/doQuizQuestionTitle" />
+       <RadioGroup
+           android:id="@+id/doQuizRadioGroup"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+           android:layout_centerHorizontal="true">
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Infinite"
-        android:id="@+id/radioButton4"
-        android:layout_below="@+id/radioButton3"
-        android:layout_alignLeft="@+id/radioButton3"
-        android:layout_alignStart="@+id/radioButton3" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Swipe -> to go to next question"
-        android:id="@+id/textView"
-        android:layout_below="@+id/radioButton4"
-        android:layout_toRightOf="@+id/radioButton4"
-        android:layout_toEndOf="@+id/radioButton4"
-        android:layout_marginTop="38dp" />
+
+           <TextView
+               android:id="@+id/doQuizQuestionText"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="How long is a piece of string?" />
+
+       </RadioGroup>
+   -->
+
 
 
 </RelativeLayout>
