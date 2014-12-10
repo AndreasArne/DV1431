@@ -88,6 +88,19 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        // TILLFÄLLIG KNAPP, ta bort när vi har ListQuizzes -> DoQuiz-länken
+        Button btn_doQuiz = (Button) findViewById(R.id.test_do_Quiz);
+        btn_doQuiz.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"Do Quiz",Toast.LENGTH_SHORT ).show();
+                Intent doQuizInt = new Intent(MainActivity.this,DoQuiz.class);
+                doQuizInt.putExtra("quizzes",quizzes);
+                startActivity(doQuizInt);
+            }
+        });
+
     }
 
     @Override

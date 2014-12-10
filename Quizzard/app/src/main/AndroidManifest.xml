@@ -40,6 +40,12 @@
             />
 
 
+        <!-- Ändra parentActivityName till ListQuizzes när vi har länken -->
+        <activity
+            android:name="se.bth.students.quizzard.DoQuiz"
+            android:label="List Quizzes"
+            android:parentActivityName="se.bth.students.quizzard.MainActivity" />
+
     </application>
 
 </manifest>
