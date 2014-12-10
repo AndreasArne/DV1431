@@ -31,13 +31,15 @@ import java.util.ArrayList;
  */
 public class ListQuizzes extends Activity {
     private ArrayList<Quiz> quizzesL; // local quizzes
-    private ArrayList<Quiz> quizzesS = new ArrayList<Quiz>(); // quizzes on server
+    private ArrayList<String> quizzesS = new ArrayList<String>(); // names of quizzes on server
     private ListView listViewL, listViewS, currListView;
-    private ArrayList<Quiz> list = new ArrayList<Quiz>();
+    private ArrayList<Quiz> listL = new ArrayList<Quiz>();
+    private ArrayList<String> listS = new ArrayList<String>();
     private RadioButton buttonServer;
     private RadioButton buttonLocal;
-    private Button buttonFireList;
-    private ArrayAdapter<Quiz> adapter;
+    //private Button buttonFireList;
+    private ArrayAdapter<Quiz> adapterL;
+    private ArrayAdapter<String> adapterS;
     private static final int LOCAL_LIST_ID = 1;
     private static final int SERVER_LIST_ID = 2;
     private static final int CURR_LIST_ID = 3;
@@ -73,11 +75,12 @@ public class ListQuizzes extends Activity {
         //buttonFireList.setOnClickListener(buttonFireListListener);
         //quizzesL = (ArrayList<Quiz>) getIntent().getSerializableExtra("quizzes");
 
-        adapter = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1, list);
+        adapterL = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1, listL);
+        adapterS = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listS);
         // adapter = new ItemView(this, quizzes);
-        listViewL.setAdapter(adapter);
+        listViewL.setAdapter(adapterL);
         registerForContextMenu(listViewL);
-        listViewS.setAdapter(adapter);
+        listViewS.setAdapter(adapterS);
         registerForContextMenu(listViewS);
 
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -85,22 +88,16 @@ public class ListQuizzes extends Activity {
             public void onItemClick(AdapterView av, View v,
                                     int position, long id) {
 
-        int lId = listViewL.getId();
+/*        int lId = listViewL.getId();
         int sId = listViewS.getId();
-        int currId = av.getId();
+        int currId = av.getId();*/
 
                 if (av.getId() == listViewL.getId()) { // action for short click on item in Local List
                     // get quiz obj
                     Quiz quizToSend = null;
-                    // select right list of quizzes (local or server)
-                    ArrayList<Quiz> quizzes;
-                    RadioButton rb1 = (RadioButton) findViewById(R.id.radioButtonLocal);
-                    if (rb1.isChecked())
-                        quizzes = quizzesL;
-                    else quizzes = quizzesS;
 
-                    if (quizzes != null)
-                        quizToSend = quizzes.get(position);
+                    if (quizzesL != null)
+                        quizToSend = quizzesL.get(position);
 
                     // start the DoQuiz activity
                     if (quizToSend != null) {
@@ -110,7 +107,7 @@ public class ListQuizzes extends Activity {
                     }
                 }
                 else if (av.getId() == listViewS.getId()) { // action for short click on item in Server List
-                    Toast.makeText(getApplicationContext(), "You will download " + quizzesS.get(position).toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "You will download " + quizzesS.get(position), Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -195,12 +192,12 @@ public class ListQuizzes extends Activity {
 
         if (quizzesL != null && quizzesL.size() > 0) {
             // update UI with list of questions
-            list.clear();
+            listL.clear();
             for (Quiz q : quizzesL) {
                 //String name = q.getName();
-                list.add(q);
+                listL.add(q);
             }
-            adapter.notifyDataSetChanged();
+            adapterL.notifyDataSetChanged();
         }
         else { // just clean up the list view
             LinearLayout l = (LinearLayout) findViewById(R.id.listview_container);
@@ -212,12 +209,11 @@ public class ListQuizzes extends Activity {
         Toast.makeText(getApplicationContext(), "Coming soon :)", Toast.LENGTH_SHORT).show();
         if (quizzesS != null && quizzesS.size() > 0) {
             // update UI with list of questions
-            list.clear();
-            for (Quiz q : quizzesS) {
-                //String name = q.getName();
-                list.add(q);
+            listS.clear();
+            for (String s : quizzesS) {
+                listS.add(s);
             }
-            adapter.notifyDataSetChanged();
+            adapterS.notifyDataSetChanged();
         }
         else { // just clean up the list view
             LinearLayout l = (LinearLayout) findViewById(R.id.listview_container);
@@ -226,17 +222,8 @@ public class ListQuizzes extends Activity {
     }
 
     private void mockUpServer() {
-        Quiz sQuiz1 = new Quiz("serv_mockup_quiz1", "", "");
-        Question q1 = new Question("question1");
-        q1.addAnswer("answer1", true);
-        q1.addAnswer("answer2", false);
-        sQuiz1.addQuestion(q1);
-
-        Quiz sQuiz2 = new Quiz("serv_mockup_quiz2", "", "");
-        Question q2 = new Question("question1 of quiz2");
-        q2.addAnswer("answer1 quiz2", true);
-        q2.addAnswer("answer2 quiz2", false);
-        sQuiz2.addQuestion(q2);
+        String sQuiz1 = "serv_mockup_quiz1";
+        String sQuiz2 = "serv_mockup_quiz2";
 
         this.quizzesS.add(sQuiz1);
         this.quizzesS.add(sQuiz2);
@@ -253,14 +240,14 @@ public class ListQuizzes extends Activity {
         int currId = v.getId();*/
 
         if (v.getId() == this.listViewL.getId()) {
-            String quizName = ((Quiz) adapter.getItem(aInfo.position)).toString();
+            String quizName = ((Quiz) adapterL.getItem(aInfo.position)).toString();
             menu.setHeaderTitle("Options for " + quizName);
             menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
             menu.add(1, 1, 2, "Delete quiz");
         }
 
         if (v.getId() == this.listViewS.getId()) {
-            String quizName = ((Quiz) adapter.getItem(aInfo.position)).toString();
+            String quizName = ((String) adapterS.getItem(aInfo.position));
             menu.setHeaderTitle("Options for " + quizName);
             menu.add(1, 0, 1, "Download quiz"); // groupId, itemId, orderIndex, name
             //menu.add(1, 1, 2, "Delete quiz")
@@ -271,35 +258,29 @@ public class ListQuizzes extends Activity {
     // This method called when user selects an Item in the Context menu
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        // select right list of quizzes (local or server)
-        ArrayList<Quiz> quizzes;
-        RadioButton rb1 = (RadioButton) findViewById(R.id.radioButtonLocal);
-        if (rb1.isChecked())
-            quizzes = quizzesL;
-        else quizzes = quizzesS;
 
         AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
 
-        ListView l = (ListView) aInfo.targetView.getParent();
+        ListView listV = (ListView) aInfo.targetView.getParent();
 
 
 /*        int currId = l.getId();
         int lId = listViewL.getId();
         int sId = listViewS.getId();*/
 
-        if (l.getId() == this.listViewL.getId()) {  // Local ListView
+        if (listV.getId() == this.listViewL.getId()) {  // Local ListView
 
             if (itemId == 1) { // delete quiz
-                Toast.makeText(this, "You will delete " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You will delete " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
             } else if (itemId == 0) { // edit quiz
-                Toast.makeText(this, "You will edit " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You will edit " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
             }
         }
 
-        if (l.getId() == this.listViewS.getId()) { // ServerListView
+        if (listV.getId() == this.listViewS.getId()) { // ServerListView
             if (itemId == 0) { // download quiz
-                Toast.makeText(this, "You will download " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You will download " + quizzesS.get(aInfo.position), Toast.LENGTH_SHORT).show();
             }
         }
         return true;
