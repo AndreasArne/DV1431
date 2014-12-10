@@ -34,12 +34,12 @@
                 android:paddingRight="10dp"
                  />
 
-            <Button
+<!--            <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="List"
-                android:id="@+id/buttonFireList" />
+                android:id="@+id/buttonFireList" />-->
 
         </LinearLayout>
 
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="List Quizzes.."
+            android:text="Quizzes on your phone:"
             android:id="@+id/ListQuizzesTextView"
             android:layout_weight="0.04"
             android:paddingLeft="5dp"/>

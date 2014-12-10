@@ -71,4 +71,12 @@ public class Quiz implements Serializable{
     public void setLastResult(double lastResult) {
         this.lastResult = lastResult;
     }
+
+    @Override
+    public String toString() {
+        String s = "";
+        s = this.name;
+        return s;
+    }
+
 }
