@@ -22,12 +22,14 @@
             android:parentActivityName="se.bth.students.quizzard.MainActivity" />
 
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name="se.bth.students.quizzard.CreateQuiz"
             android:label="Create Quiz"
             android:parentActivityName="se.bth.students.quizzard.MainActivity"
             android:launchMode="singleTop"/>
 
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name="se.bth.students.quizzard.EditQuiz"
             android:label="Edit Quiz"
             android:parentActivityName="se.bth.students.quizzard.ListQuizzes"
