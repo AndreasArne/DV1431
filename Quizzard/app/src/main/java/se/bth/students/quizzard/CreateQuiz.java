@@ -158,7 +158,7 @@ public class CreateQuiz extends Activity {
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == index) { // a new question
                 if (resultCode == RESULT_OK) {
-                    Log.i("mytag", "IM BACK!");
+                    //Log.i("mytag", "IM BACK!");
                     Question newQuestion = (Question) data.getSerializableExtra("Question");
                     this.quiz.addQuestion(newQuestion);
                     //Log.i("mytag", "the quiz now has: " + this.quiz.getQuestions().size() + " questions");
