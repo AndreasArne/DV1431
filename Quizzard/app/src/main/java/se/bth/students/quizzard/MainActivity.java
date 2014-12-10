@@ -25,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 
 public class MainActivity extends Activity {
@@ -58,6 +59,19 @@ public class MainActivity extends Activity {
                 if( (now.getTimeInMillis() - last.getTimeInMillis()) >750) {
                     last = now;
                     Toast.makeText(getApplicationContext(), "Shake!", Toast.LENGTH_SHORT).show();
+                    if(quizzes.size() == 1){
+                        Intent i = new Intent(getApplicationContext(), DoQuiz.class);
+                        i.putExtra("Quiz", quizzes.get(0));
+                        startActivity(i);
+
+                    }
+                    else if(quizzes.size() > 1){
+                        Random r = new Random();
+                        int index = r.nextInt(quizzes.size()) ;
+                        Intent i = new Intent(getApplicationContext(), DoQuiz.class);
+                        i.putExtra("Quiz", quizzes.get(index));
+                        startActivity(i);
+                    }
                 }
             }
         });
