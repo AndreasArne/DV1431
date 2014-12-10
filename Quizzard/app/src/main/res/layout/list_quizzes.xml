@@ -49,7 +49,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="List Quizzes.."
             android:id="@+id/ListQuizzesTextView"
-            android:layout_weight="0.04" />
+            android:layout_weight="0.04"
+            android:paddingLeft="5dp"/>
 
         <ListView
             android:layout_width="match_parent"

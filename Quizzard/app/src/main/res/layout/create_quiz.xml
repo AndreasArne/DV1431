@@ -53,6 +53,15 @@
         android:paddingRight="3dp"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Questions of this Quiz"
+        android:paddingLeft="5dp"
+        android:id="@+id/questions_list_tv"
+        android:layout_weight="0.04" />
+
 
     <ListView
         android:layout_width="fill_parent"

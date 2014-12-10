@@ -1,10 +1,12 @@
 package se.bth.students.quizzard;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -47,10 +50,6 @@ public class CreateQuiz extends Activity {
 
         // restore saved state
         loadQuizFromDisk();
-/*        // now delete backup file from disk
-        File dir = getFilesDir();
-        File file = new File(dir, "create_quiz");
-        boolean deleted = file.delete();*/
 
         // restore state of text fields
         if (savedInstanceState != null) {
@@ -212,9 +211,45 @@ public class CreateQuiz extends Activity {
     }
 
     @Override
+    public void onResume() {
+        TextView questions_tv = (TextView) findViewById(R.id.questions_list_tv);
+        if (list.size() == 0) {
+            questions_tv.setVisibility(View.INVISIBLE);
+        }
+        else questions_tv.setVisibility(View.VISIBLE);
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
-        this.NO_SAVE_TO_DISK = true;
-        finish();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateQuiz.this);
+        final TextView msg = new TextView(this);
+        builder.setView(msg);
+
+        builder.setMessage("Leave page? (Quiz will not be saved)")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        NO_SAVE_TO_DISK = true;
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+
+        EditText quiz_name_txt = (EditText) findViewById(R.id.quiz_name_txt);
+        String quizName = quiz_name_txt.getText().toString();
+        if (quizName != null && !quizName.equals("") && !quizName.equals("N/A"))
+            alertDialog.show();
+        else {
+            NO_SAVE_TO_DISK = true;
+            finish();
+        }
     }
 
     @Override protected void onDestroy() {
