@@ -47,11 +47,8 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
     // Create the score screen when the submit event fires in the fragment
     @Override
     public void onClickSubmitButton(View v) {
-        Log.d("DoQuiz", "SUBMIT CLICKED!");
 
         int i = 0;
-
-
         ArrayList<Result> res = new ArrayList<Result>();
         int nCorrect = 0;
         for (Fragment f : fragments) {

@@ -99,13 +99,11 @@ public class DoQuizFragment extends Fragment implements Serializable {
                 cb.setChecked(false);
                 cb.setId(i);
                 cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                  @Override
-                                                  public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                      cb.setChecked(isChecked);
-                                                      Log.d("DoQuizzFragment", "checkbox ticked = " + cb.isChecked());
-                                                      Log.d("DoQuizzFragment", "isRightAnswer() = " + isRightAnswer());
-                                                  }
-                                              }
+                          @Override
+                          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                              cb.setChecked(isChecked);
+                          }
+                      }
                 );
                 checkBoxes.add(cb);
                 answersContainer.addView(cb);
@@ -205,7 +203,7 @@ public class DoQuizFragment extends Fragment implements Serializable {
     }
 
     private void checkBoxListener(CheckBox cb) {
-        Log.d("CHeckBox OnClickListener", "cb " + cb.getText());
+
     }
 
     // Returns a arraylist of the indices of the correct answers, e.g. [2, 4] if the correct answers are 2 and 4.
@@ -224,7 +222,7 @@ public class DoQuizFragment extends Fragment implements Serializable {
 
     //    @Override
     public void onResume() {
-        Log.d("DoQuizzFragment", "DoQuizzFragment.onResume() called");
+
         super.onResume();
 
     }
