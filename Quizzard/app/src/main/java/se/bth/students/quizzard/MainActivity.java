@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
 
 
         // TILLFÄLLIG KNAPP, ta bort när vi har ListQuizzes -> DoQuiz-länken
-        Button btn_doQuiz = (Button) findViewById(R.id.test_do_Quiz);
+     /*   Button btn_doQuiz = (Button) findViewById(R.id.test_do_Quiz);
         btn_doQuiz.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
                 doQuizInt.putExtra("quizzes",quizzes);
                 startActivity(doQuizInt);
             }
-        });
+        });*/
 
     }
 

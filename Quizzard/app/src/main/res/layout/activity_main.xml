@@ -37,6 +37,7 @@
         />
 
     <!-- TILLFÄLLIG KNAPP, ta bort när vi har ListQuizzes -> DoQuiz-länken -->
+    <!--
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
@@ -46,6 +47,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="#ff000000" />
-
+        android:textColor="#ff000000" /> -->
 </RelativeLayout>

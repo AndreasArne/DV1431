@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class DoQuiz extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_do_quizz);
         fragments = createFragments();
         pageAdapter = new DoQuizPageAdapter(getSupportFragmentManager(), fragments);
@@ -28,7 +30,8 @@ public class DoQuiz extends FragmentActivity {
     }
 
     private List<Fragment> createFragments() {
-        currentQuiz = this.getDummyQuiz();
+        currentQuiz = (Quiz)getIntent().getSerializableExtra("Quiz");
+
         questions = currentQuiz.getQuestions();
         List<Fragment> fList = new ArrayList<Fragment>();
 
@@ -59,7 +62,7 @@ public class DoQuiz extends FragmentActivity {
     }
 
     // Dummy data, to be replaced with the Quiz parameter.
-    private Quiz getDummyQuiz() {
+  /*  private Quiz getDummyQuiz() {
 
         Quiz q = new Quiz("MA1111", "Linear algebra", "Saddam Hussein");
         Question q1 = new Question("1 + 1 = ?");
@@ -138,7 +141,7 @@ public class DoQuiz extends FragmentActivity {
 
         System.out.println(q.getQuestions().toString());
         return q;
-    }
+    }*/
 }
 
 
