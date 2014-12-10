@@ -60,10 +60,10 @@ public class MainActivity extends Activity {
                 now = Calendar.getInstance();
                 if( (now.getTimeInMillis() - last.getTimeInMillis()) >750) {
                     last = now;
-                    Toast.makeText(getApplicationContext(), "Random quiz started!", Toast.LENGTH_SHORT).show();
                     if(quizzes.size() == 1){
                         Intent i = new Intent(getApplicationContext(), DoQuiz.class);
                         i.putExtra("Quiz", quizzes.get(0));
+                        Toast.makeText(getApplicationContext(), "Random quiz started!", Toast.LENGTH_SHORT).show();
                         startActivity(i);
 
                     }
@@ -72,8 +72,10 @@ public class MainActivity extends Activity {
                         int index = r.nextInt(quizzes.size()) ;
                         Intent i = new Intent(getApplicationContext(), DoQuiz.class);
                         i.putExtra("Quiz", quizzes.get(index));
+                        Toast.makeText(getApplicationContext(), "Random quiz started!", Toast.LENGTH_SHORT).show();
                         startActivity(i);
                     }
+                    else Toast.makeText(getApplicationContext(), "No quizzes here, why don't you create one?", Toast.LENGTH_SHORT).show();
                 }
             }
         });
