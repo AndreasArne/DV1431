@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"List quizzes!",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"List quizzes!",Toast.LENGTH_SHORT).show();
                 Intent listInt = new Intent(MainActivity.this,ListQuizzes.class);
                 listInt.putExtra("quizzes",quizzes);
                 startActivity(listInt);
@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         createQ.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Create quiz!",Toast.LENGTH_SHORT ).show();
+                //Toast.makeText(MainActivity.this,"Create quiz!",Toast.LENGTH_SHORT ).show();
                 //writeQuizzes();
                 //readQuizzes();
                 Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);

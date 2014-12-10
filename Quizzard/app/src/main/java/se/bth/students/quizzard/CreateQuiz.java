@@ -252,6 +252,12 @@ public class CreateQuiz extends Activity {
         }
     }
 
+    // Back button in Action bar
+    public boolean onOptionsItemSelected(MenuItem item){
+        onBackPressed();
+        return true;
+    }
+
     @Override protected void onDestroy() {
         if (!NO_SAVE_TO_DISK && quiz != null && !quiz.getName().equals("N/A")) {
             saveQuizToDisk();
