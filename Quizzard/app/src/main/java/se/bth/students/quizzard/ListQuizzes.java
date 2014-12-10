@@ -55,9 +55,15 @@ public class ListQuizzes extends Activity {
                                     int position, long id) {
                 // get quiz obj
                 Quiz quizToSend = null;
+                // select right list of quizzes (local or server)
+                ArrayList<Quiz> quizzes;
+                RadioButton rb1 = (RadioButton) findViewById(R.id.radioButtonLocal);
+                if (rb1.isChecked())
+                    quizzes = quizzesL;
+                else quizzes = quizzesS;
 
-                if (quizzesL != null)
-                    quizToSend = quizzesL.get(position);
+                if (quizzes != null)
+                    quizToSend = quizzes.get(position);
 
                 // start the DoQuiz activity
                 if (quizToSend != null) {
@@ -198,14 +204,33 @@ public class ListQuizzes extends Activity {
     // This method called when user selects an Item in the Context menu
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        // select right list of quizzes (local or server)
+        ArrayList<Quiz> quizzes;
+        RadioButton rb1 = (RadioButton) findViewById(R.id.radioButtonLocal);
+        if (rb1.isChecked())
+            quizzes = quizzesL;
+        else quizzes = quizzesS;
+
         AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
         Toast.makeText(this, "itemId was: "+ itemId, Toast.LENGTH_SHORT);
         if (itemId == 1) { // delete quiz
-            Toast.makeText(this, "You will delete " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You will delete " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
         } else if (itemId == 0) { // edit quiz
-            Toast.makeText(this, "You will edit " +  quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You will edit " +  quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
         }
         return true;
     }
+
+    @Override protected void onDestroy() {
+        if (quizzesL != null ) {
+            saveQuizzesToDisk();
+        }
+        super.onDestroy();
+    }
+
+    private void saveQuizzesToDisk() {
+
+    }
+
 }
