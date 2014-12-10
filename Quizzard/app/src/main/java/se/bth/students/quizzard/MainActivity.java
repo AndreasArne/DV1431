@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
                 now = Calendar.getInstance();
                 if( (now.getTimeInMillis() - last.getTimeInMillis()) >750) {
                     last = now;
-                    Toast.makeText(getApplicationContext(), "Shake!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Random quiz started!", Toast.LENGTH_SHORT).show();
                     if(quizzes.size() == 1){
                         Intent i = new Intent(getApplicationContext(), DoQuiz.class);
                         i.putExtra("Quiz", quizzes.get(0));
@@ -115,6 +115,7 @@ public class MainActivity extends Activity {
             }
         });*/
 
+        Toast.makeText(getApplicationContext(), "Shake phone to start random quiz!", Toast.LENGTH_LONG).show();
     }
 
     @Override
