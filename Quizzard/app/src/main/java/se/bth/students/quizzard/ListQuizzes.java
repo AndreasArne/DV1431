@@ -1,7 +1,9 @@
 package se.bth.students.quizzard;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
@@ -62,6 +64,7 @@ public class ListQuizzes extends Activity {
         listViewL = new ListView (this);
         listViewS = new ListView(this);
         currListView = listViewL;
+
         listViewL.setId(LOCAL_LIST_ID);
         listViewS.setId(SERVER_LIST_ID);
         currListView.setId(CURR_LIST_ID);
@@ -87,10 +90,6 @@ public class ListQuizzes extends Activity {
             @Override
             public void onItemClick(AdapterView av, View v,
                                     int position, long id) {
-
-/*        int lId = listViewL.getId();
-        int sId = listViewS.getId();
-        int currId = av.getId();*/
 
                 if (av.getId() == listViewL.getId()) { // action for short click on item in Local List
                     // get quiz obj
@@ -123,7 +122,29 @@ public class ListQuizzes extends Activity {
         //Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
     }
 
-    public void removeQuizFromLocalList() {
+    public void removeQuizFromLocalList(int i) {
+        final int idToBeDeleted = i;
+        AlertDialog.Builder builder = new AlertDialog.Builder(ListQuizzes.this);
+        final TextView msg = new TextView(this);
+        builder.setView(msg);
+
+        builder.setMessage("Really delete quiz?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        quizzesL.remove(idToBeDeleted);
+                        //refresh list
+                        updateUIListLocal();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
 
     }
 
@@ -272,7 +293,8 @@ public class ListQuizzes extends Activity {
         if (listV.getId() == this.listViewL.getId()) {  // Local ListView
 
             if (itemId == 1) { // delete quiz
-                Toast.makeText(this, "You will delete " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "You will delete " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+                removeQuizFromLocalList(aInfo.position);
             } else if (itemId == 0) { // edit quiz
                 Toast.makeText(this, "You will edit " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
             }
@@ -292,6 +314,28 @@ public class ListQuizzes extends Activity {
             saveLocalQuizzesToDisk();
         }
         super.onPause();
+
+    }
+
+    // Back button in Action bar
+    public boolean onOptionsItemSelected(MenuItem item){
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        onDestroy();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // send quizzes back to MainActivity for persistence (otherwise MainActivity will overwrite the file on disk with its own data)
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("Quizzes", this.quizzesL);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+        super.onDestroy();
     }
 
     private void saveLocalQuizzesToDisk() {

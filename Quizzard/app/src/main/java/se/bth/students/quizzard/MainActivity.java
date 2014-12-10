@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
     private Calendar now;
     private ArrayList<Quiz> quizzes;
     static public final int GET_NEW_QUIZ_CODE = 1;
+    static public final int GET_UPDATED_QUIZZES = 2;
     static public final String FILE_QUIZZES = "quizzes";
 
     @Override
@@ -85,7 +86,7 @@ public class MainActivity extends Activity {
                 //Toast.makeText(getApplicationContext(),"List quizzes!",Toast.LENGTH_SHORT).show();
                 Intent listInt = new Intent(MainActivity.this,ListQuizzes.class);
                 //listInt.putExtra("quizzes",quizzes);
-                startActivity(listInt);
+                startActivityForResult(listInt, GET_UPDATED_QUIZZES);
             }
         });
 
@@ -98,7 +99,7 @@ public class MainActivity extends Activity {
                 //writeQuizzes();
                 //readQuizzes();
                 Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);
-                createInt.putExtra("quizzes",quizzes);
+                //createInt.putExtra("quizzes",quizzes);
                 startActivityForResult(createInt, GET_NEW_QUIZ_CODE);
             }
         });
@@ -134,6 +135,7 @@ public class MainActivity extends Activity {
         writeQuizzes();
         super.onPause();
     }
+
 
     private void writeQuizzes(){
         //////////
@@ -196,6 +198,12 @@ public class MainActivity extends Activity {
             if (requestCode == GET_NEW_QUIZ_CODE) { // new quiz to be saved
                 Quiz quizToBeSaved = (Quiz) data.getSerializableExtra("Quiz");
                 this.quizzes.add(quizToBeSaved);
+            }
+
+            if (requestCode == GET_UPDATED_QUIZZES) { // quizzes object may have been changed by ListQuizzes, gets updated
+               ArrayList<Quiz> updated_quizzes = (ArrayList<Quiz>) data.getSerializableExtra("Quizzes");
+               // update quizzes
+                this.quizzes = updated_quizzes;
             }
         }
 
