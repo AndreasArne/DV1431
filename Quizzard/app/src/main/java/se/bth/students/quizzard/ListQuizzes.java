@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -28,18 +29,19 @@ public class ListQuizzes extends Activity {
     public RadioButton buttonLocal;
     public Button buttonFireList;
     public ArrayAdapter<Quiz> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_quizzes);
 
-        buttonServer = (RadioButton)findViewById(R.id.radioButtonServer);
+        buttonServer = (RadioButton) findViewById(R.id.radioButtonServer);
         buttonServer.setOnClickListener(radioButtonServerListener);
-        buttonLocal = (RadioButton)findViewById(R.id.radioButtonLocal);
+        buttonLocal = (RadioButton) findViewById(R.id.radioButtonLocal);
         buttonLocal.setOnClickListener(radioButtonLocalListener);
         //buttonFireList = (Button)findViewById(R.id.buttonFireList);
         //buttonFireList.setOnClickListener(buttonFireListListener);
-        quizzesL =(ArrayList<Quiz>) getIntent().getSerializableExtra("quizzes");
+        quizzesL = (ArrayList<Quiz>) getIntent().getSerializableExtra("quizzes");
         listView = (ListView) findViewById(R.id.listViewListQuizzes);
         adapter = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1, list);
         // adapter = new ItemView(this, quizzes);
@@ -55,7 +57,7 @@ public class ListQuizzes extends Activity {
                 Quiz quizToSend = null;
 
                 if (quizzesL != null)
-                quizToSend = quizzesL.get(position);
+                    quizToSend = quizzesL.get(position);
 
                 // start the DoQuiz activity
                 if (quizToSend != null) {
@@ -73,35 +75,34 @@ public class ListQuizzes extends Activity {
         mockUpServer();
 
 
-
-
         //Toast.makeText(getApplicationContext(), quizzes.get(0).getAuthor() + quizzes.get(1).getCourse(), Toast.LENGTH_LONG).show();
         //Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
     }
-    public void listLocalQuiz()
-    {
+
+    public void listLocalQuiz() {
         updateUIListLocal();
     }
-    public void listServerQuiz()
-    {
+
+    public void listServerQuiz() {
         updateUIListServer();
-        Toast.makeText(getApplicationContext(),"Coming soon :)",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Coming soon :)", Toast.LENGTH_SHORT).show();
     }
-    public void removeQuizFromLocalList()
-    {
+
+    public void removeQuizFromLocalList() {
 
     }
-    public OnClickListener radioButtonServerListener= new OnClickListener() {
+
+    public OnClickListener radioButtonServerListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-                buttonLocal.setChecked(false);
-                buttonServer.setChecked(true);
+            buttonLocal.setChecked(false);
+            buttonServer.setChecked(true);
             TextView intro = (TextView) findViewById(R.id.ListQuizzesTextView);
             intro.setText("Quizzes online:");
             listServerQuiz();
         }
     };
-    public OnClickListener radioButtonLocalListener= new OnClickListener() {
+    public OnClickListener radioButtonLocalListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             buttonLocal.setChecked(true);
@@ -141,7 +142,7 @@ public class ListQuizzes extends Activity {
     }
 
     private void updateUIListLocal() {
-        if(quizzesL != null) {
+        if (quizzesL != null) {
             // update UI with list of questions
             list.clear();
             for (Quiz q : quizzesL) {
@@ -153,7 +154,7 @@ public class ListQuizzes extends Activity {
     }
 
     private void updateUIListServer() {
-        if(quizzesS != null) {
+        if (quizzesS != null) {
             // update UI with list of questions
             list.clear();
             for (Quiz q : quizzesS) {
@@ -165,13 +166,13 @@ public class ListQuizzes extends Activity {
     }
 
     private void mockUpServer() {
-        Quiz sQuiz1 = new Quiz ("serv_mockup_quiz1", "", "");
+        Quiz sQuiz1 = new Quiz("serv_mockup_quiz1", "", "");
         Question q1 = new Question("question1");
         q1.addAnswer("answer1", true);
         q1.addAnswer("answer2", false);
         sQuiz1.addQuestion(q1);
 
-        Quiz sQuiz2 = new Quiz ("serv_mockup_quiz2", "", "");
+        Quiz sQuiz2 = new Quiz("serv_mockup_quiz2", "", "");
         Question q2 = new Question("question1 of quiz2");
         q2.addAnswer("answer1 quiz2", true);
         q2.addAnswer("answer2 quiz2", false);
@@ -181,16 +182,30 @@ public class ListQuizzes extends Activity {
         this.quizzesS.add(sQuiz2);
     }
 
+    // This method creates a context Menu for the quiz list
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         String quizName = ((Quiz) adapter.getItem(aInfo.position)).toString();
-        menu.setHeaderTitle("Options for "+quizName);
-        menu.add(1,1,1, "Edit quiz");
-        menu.add(1,2,2, "Delete quiz");
+        menu.setHeaderTitle("Options for " + quizName);
+        menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
+        menu.add(1, 1, 2, "Delete quiz");
 
     }
 
-
+    // This method called when user selects an Item in the Context menu
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int itemId = item.getItemId();
+        Toast.makeText(this, "itemId was: "+ itemId, Toast.LENGTH_SHORT);
+        if (itemId == 1) { // delete quiz
+            Toast.makeText(this, "You will delete " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+        } else if (itemId == 0) { // edit quiz
+            Toast.makeText(this, "You will edit " +  quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
 }
