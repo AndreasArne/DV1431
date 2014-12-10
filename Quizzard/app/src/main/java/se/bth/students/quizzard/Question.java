@@ -78,24 +78,12 @@ public class Question implements Serializable {
         this.questionType = questionType;
     }
 
-/*    *//**
-     *
-     * @return true if this question has only one right answer, false if it has multiple right answers
-     *//*
-    public boolean hasUniqueRightAnswer() {
-        boolean ret;
-        int counter = 0;
-        for (Answer ans:this.answers) {
-            if (ans.isRight())
-                counter++;
-        }
-
-        if (counter == 1)
-            ret = true;
-        else ret = false;
-
-        return ret;
-    }*/
+    @Override
+    public String toString() {
+        String s = "";
+        s = this.questionText;
+        return s;
+    }
 
 
 

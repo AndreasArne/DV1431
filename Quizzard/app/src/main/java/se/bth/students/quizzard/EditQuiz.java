@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +40,8 @@ public class EditQuiz extends Activity {
     //static public final int NEW_QUESTION_CODE = 1;
     //static public final int EDITED_QUESTION_CODE = 2;
     ListView q_list;
-    ArrayList<String> list = new ArrayList<String>();
-    ArrayAdapter<String> adapter;
+    ArrayList<Question> list = new ArrayList<Question>();
+    ArrayAdapter<Question> adapter;
     boolean NO_SAVE_TO_DISK = false;
     static final String FILE_EDIT_QUIZ = "edit_quiz";
 
@@ -93,18 +94,18 @@ public class EditQuiz extends Activity {
         }
 
         q_list = (ListView) findViewById(R.id.edit_questions_list);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<Question>(this, android.R.layout.simple_list_item_1, list);
         q_list.setAdapter(adapter);
         updateUIList();
 
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView arg0, View arg1,
-                                    int arg2, long arg3) {
+            public void onItemClick(AdapterView av, View v,
+                                    int position, long arg3) {
                 //  Toast.makeText(getBaseContext(), "Long Clicked:" + adapter.getItem(arg2) , Toast.LENGTH_SHORT).show();
                 // get question obj
                 Question questionToSend = null;
-                String question_txt = adapter.getItem(arg2);
+                String question_txt = adapter.getItem(position).toString();
                 int found = -1;
                 ArrayList<Question> questions = quiz.getQuestions();
                 if (questions != null) {
@@ -127,6 +128,7 @@ public class EditQuiz extends Activity {
             }
         };
         q_list.setOnItemClickListener(itemClickListener);
+        registerForContextMenu(q_list);
 
         //button listener
         Button addQ_btn = (Button) findViewById(R.id.edit_add_question_btn);
@@ -316,8 +318,8 @@ public class EditQuiz extends Activity {
             list.clear();
             ArrayList<Question> questions = quiz.getQuestions();
             for (Question q : questions) {
-                String name = q.getQuestionText();
-                list.add(name);
+                //String name = q.getQuestionText();
+                list.add(q);
             }
             adapter.notifyDataSetChanged();
         }
@@ -371,6 +373,67 @@ public class EditQuiz extends Activity {
         boolean deleted = file.delete();
         return deleted;
 
+    }
+
+    // This method creates a context Menu for the question list
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        //String quizName = ((Quiz) adapterL.getItem(aInfo.position)).toString();
+        menu.setHeaderTitle("Options for question");
+        menu.add(1, 0, 1, "View/Edit question"); // groupId, itemId, orderIndex, name
+        menu.add(1, 1, 2, "Delete question");
+    }
+
+    // This method called when user selects an Item in the Context menu
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int itemId = item.getItemId();
+
+        Question q = (Question) quiz.getQuestions().get(aInfo.position);
+
+        if (itemId == 1) { // delete question
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditQuiz.this);
+            final TextView msg = new TextView(this);
+            final int code = aInfo.position;
+            builder.setView(msg);
+
+            builder.setMessage("Really delete question?")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // delete question
+                            ArrayList<Question> questions = quiz.getQuestions();
+                            questions.remove(code);
+                            quiz.attachQuestions(questions);
+
+                            // update UI with list of questions
+                            updateUIList();
+                            Toast.makeText(getBaseContext(), "Question was deleted successfully" , Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+        } else if (itemId == 0) { // edit question
+            //Toast.makeText(this, "You will edit " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+            // start the EditQuestion activity
+            if (q != null) {
+                Intent i = new Intent(getApplicationContext(), EditQuestion.class);
+                i.putExtra("Question", q);
+                startActivityForResult(i, aInfo.position);
+            }
+        }
+        return true;
     }
 
 }
