@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
     private Calendar now;
     private ArrayList<Quiz> quizzes;
     static public final int GET_NEW_QUIZ_CODE = 1;
+    static public final String FILE_QUIZZES = "quizzes";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +144,7 @@ public class MainActivity extends Activity {
         //////////
 
         File dir = getFilesDir();
-        File file = new File (dir, "test");
+        File file = new File (dir, FILE_QUIZZES);
 
 
         try{
@@ -169,7 +170,7 @@ public class MainActivity extends Activity {
 
          try {
              File dir = getFilesDir();
-             File file = new File(dir, "test");
+             File file = new File(dir, FILE_QUIZZES);
 
              FileInputStream fin = getApplicationContext().openFileInput(file.getName());
              ObjectInputStream in = new ObjectInputStream(fin);
@@ -228,7 +229,7 @@ public class MainActivity extends Activity {
     // DEBUGGING PURPOSES ONLY
     private void deleteQuizzesFromDisk() {
         File dir = getFilesDir();
-        File file = new File(dir, "test");
+        File file = new File(dir, FILE_QUIZZES);
         boolean deleted = file.delete();
     }
 }
