@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/list_quizzes_layout">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1">
+        android:weightSum="1"
+        >
 
         <LinearLayout
             android:orientation="horizontal"
@@ -51,12 +53,16 @@
             android:id="@+id/ListQuizzesTextView"
             android:layout_weight="0.04"
             android:paddingLeft="5dp"
-            android:paddingTop="10dp"/>
+            android:paddingTop="10dp"
+            />
 
-        <ListView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listViewListQuizzes"
-            android:layout_weight="0.01" />
+            android:id="@+id/listview_container">
+
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

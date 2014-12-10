@@ -3,13 +3,16 @@ package se.bth.students.quizzard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -21,14 +24,18 @@ import java.util.ArrayList;
  * Created by mihai on 2014-12-02.
  */
 public class ListQuizzes extends Activity {
-    public ArrayList<Quiz> quizzesL; // local quizzes
-    public ArrayList<Quiz> quizzesS = new ArrayList<Quiz>(); // quizzes on server
-    public ListView listView;
-    ArrayList<Quiz> list = new ArrayList<Quiz>();
-    public RadioButton buttonServer;
-    public RadioButton buttonLocal;
-    public Button buttonFireList;
-    public ArrayAdapter<Quiz> adapter;
+    private ArrayList<Quiz> quizzesL; // local quizzes
+    private ArrayList<Quiz> quizzesS = new ArrayList<Quiz>(); // quizzes on server
+    private ListView listViewL, listViewS, currListView;
+    private ArrayList<Quiz> list = new ArrayList<Quiz>();
+    private RadioButton buttonServer;
+    private RadioButton buttonLocal;
+    private Button buttonFireList;
+    private ArrayAdapter<Quiz> adapter;
+    private static final int LOCAL_LIST_ID = 1;
+    private static final int SERVER_LIST_ID = 2;
+    private static final int CURR_LIST_ID = 3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +46,36 @@ public class ListQuizzes extends Activity {
         buttonServer.setOnClickListener(radioButtonServerListener);
         buttonLocal = (RadioButton) findViewById(R.id.radioButtonLocal);
         buttonLocal.setOnClickListener(radioButtonLocalListener);
+
+        // default view is local
+        buttonLocal.setChecked(true);
+        buttonServer.setChecked(false);
+        listViewL = new ListView (this);
+        listViewS = new ListView(this);
+        currListView = listViewL;
+        listViewL.setId(LOCAL_LIST_ID);
+        listViewS.setId(SERVER_LIST_ID);
+        currListView.setId(CURR_LIST_ID);
+
+        // add to layout
+        LinearLayout container = (LinearLayout) findViewById(R.id.listview_container);
+        container.removeAllViews();
+        container.addView(currListView);
+
         //buttonFireList = (Button)findViewById(R.id.buttonFireList);
         //buttonFireList.setOnClickListener(buttonFireListListener);
         quizzesL = (ArrayList<Quiz>) getIntent().getSerializableExtra("quizzes");
-        listView = (ListView) findViewById(R.id.listViewListQuizzes);
+
         adapter = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1, list);
         // adapter = new ItemView(this, quizzes);
-        listView.setAdapter(adapter);
-        registerForContextMenu(listView);
-
+        listViewL.setAdapter(adapter);
+        registerForContextMenu(listViewL);
+        listViewS.setAdapter(adapter);
+        registerForContextMenu(listViewS);
 
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView arg0, View arg1,
+            public void onItemClick(AdapterView av, View v,
                                     int position, long id) {
                 // get quiz obj
                 Quiz quizToSend = null;
@@ -73,25 +97,20 @@ public class ListQuizzes extends Activity {
                 }
             }
         };
-        listView.setOnItemClickListener(itemClickListener);
-
-        updateUIListLocal();
+        listViewL.setOnItemClickListener(itemClickListener);
+        listViewS.setOnItemClickListener(itemClickListener);
 
         // populate Server quizzes with mock-up objects
         mockUpServer();
 
 
+        updateUIListLocal();
+
+
+
+
         //Toast.makeText(getApplicationContext(), quizzes.get(0).getAuthor() + quizzes.get(1).getCourse(), Toast.LENGTH_LONG).show();
         //Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
-    }
-
-    public void listLocalQuiz() {
-        updateUIListLocal();
-    }
-
-    public void listServerQuiz() {
-        updateUIListServer();
-        Toast.makeText(getApplicationContext(), "Coming soon :)", Toast.LENGTH_SHORT).show();
     }
 
     public void removeQuizFromLocalList() {
@@ -105,7 +124,13 @@ public class ListQuizzes extends Activity {
             buttonServer.setChecked(true);
             TextView intro = (TextView) findViewById(R.id.ListQuizzesTextView);
             intro.setText("Quizzes online:");
-            listServerQuiz();
+            currListView = listViewS;
+
+            LinearLayout container = (LinearLayout) findViewById(R.id.listview_container);
+            container.removeAllViews();
+            container.addView(currListView);
+
+            updateUIListServer();
         }
     };
     public OnClickListener radioButtonLocalListener = new OnClickListener() {
@@ -115,7 +140,13 @@ public class ListQuizzes extends Activity {
             buttonServer.setChecked(false);
             TextView intro = (TextView) findViewById(R.id.ListQuizzesTextView);
             intro.setText("Quizzes on your phone:");
-            listLocalQuiz();
+            currListView = listViewL;
+
+            LinearLayout container = (LinearLayout) findViewById(R.id.listview_container);
+            container.removeAllViews();
+            container.addView(currListView);
+
+            updateUIListLocal();
         }
     };
 
@@ -148,6 +179,7 @@ public class ListQuizzes extends Activity {
     }
 
     private void updateUIListLocal() {
+
         if (quizzesL != null) {
             // update UI with list of questions
             list.clear();
@@ -160,6 +192,9 @@ public class ListQuizzes extends Activity {
     }
 
     private void updateUIListServer() {
+        Toast.makeText(getApplicationContext(), "Coming soon :)", Toast.LENGTH_SHORT).show();
+
+
         if (quizzesS != null) {
             // update UI with list of questions
             list.clear();
@@ -194,10 +229,23 @@ public class ListQuizzes extends Activity {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String quizName = ((Quiz) adapter.getItem(aInfo.position)).toString();
-        menu.setHeaderTitle("Options for " + quizName);
-        menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
-        menu.add(1, 1, 2, "Delete quiz");
+        int lId = listViewL.getId();
+        int sId = listViewS.getId();
+        int currId = v.getId();
+
+        if (v.getId() == this.listViewL.getId()) {
+            String quizName = ((Quiz) adapter.getItem(aInfo.position)).toString();
+            menu.setHeaderTitle("Options for " + quizName);
+            menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
+            menu.add(1, 1, 2, "Delete quiz");
+        }
+
+        if (v.getId() == this.listViewS.getId()) {
+            String quizName = ((Quiz) adapter.getItem(aInfo.position)).toString();
+            menu.setHeaderTitle("Options for " + quizName);
+            menu.add(1, 0, 1, "Download quiz"); // groupId, itemId, orderIndex, name
+            //menu.add(1, 1, 2, "Delete quiz")
+        }
 
     }
 
@@ -213,11 +261,27 @@ public class ListQuizzes extends Activity {
 
         AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
-        Toast.makeText(this, "itemId was: "+ itemId, Toast.LENGTH_SHORT);
-        if (itemId == 1) { // delete quiz
-            Toast.makeText(this, "You will delete " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
-        } else if (itemId == 0) { // edit quiz
-            Toast.makeText(this, "You will edit " +  quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+
+        ListView l = (ListView) aInfo.targetView.getParent();
+
+
+        int currId = l.getId();
+        int lId = listViewL.getId();
+        int sId = listViewS.getId();
+
+        if (l.getId() == this.listViewL.getId()) {  // Local ListView
+
+            if (itemId == 1) { // delete quiz
+                Toast.makeText(this, "You will delete " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+            } else if (itemId == 0) { // edit quiz
+                Toast.makeText(this, "You will edit " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (l.getId() == this.listViewS.getId()) { // ServerListView
+            if (itemId == 0) { // download quiz
+                Toast.makeText(this, "You will download " + quizzes.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+            }
         }
         return true;
     }
@@ -229,7 +293,8 @@ public class ListQuizzes extends Activity {
         super.onDestroy();
     }
 
-    private void saveQuizzesToDisk() {
+    private void saveQuizzesToDisk() { // just local quizzes are saved to disk
+
 
     }
 
