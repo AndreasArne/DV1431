@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -106,9 +107,26 @@ public class EditQuestion extends Activity {
         }
 
     public void deleteQuestion(View v) {
-        Question defaultQuestion = new Question();
-        this.question = defaultQuestion;
-        saveAndFinish(Activity.RESULT_FIRST_USER+1);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditQuestion.this);
+        final TextView msg = new TextView(this);
+        builder.setView(msg);
+
+        builder.setMessage("Really delete question?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Question defaultQuestion = new Question();
+                        question = defaultQuestion;
+                        saveAndFinish(Activity.RESULT_FIRST_USER+1); // code for deleted question
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 
