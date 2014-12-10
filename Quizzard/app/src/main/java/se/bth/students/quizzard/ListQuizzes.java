@@ -46,6 +46,9 @@ public class ListQuizzes extends Activity {
     private static final int SERVER_LIST_ID = 2;
     private static final int CURR_LIST_ID = 3;
 
+    private static final int DO_CODE = 4;
+    private static final int EDIT_CODE = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +105,7 @@ public class ListQuizzes extends Activity {
                     if (quizToSend != null) {
                         Intent i = new Intent(getApplicationContext(), DoQuiz.class);
                         i.putExtra("Quiz", quizToSend);
-                        startActivityForResult(i, position);
+                        startActivityForResult(i, DO_CODE);
                     }
                 }
                 else if (av.getId() == listViewS.getId()) { // action for short click on item in Server List
@@ -122,31 +125,7 @@ public class ListQuizzes extends Activity {
         //Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
     }
 
-    public void removeQuizFromLocalList(int i) {
-        final int idToBeDeleted = i;
-        AlertDialog.Builder builder = new AlertDialog.Builder(ListQuizzes.this);
-        final TextView msg = new TextView(this);
-        builder.setView(msg);
 
-        builder.setMessage("Really delete quiz?")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        quizzesL.remove(idToBeDeleted);
-                        //refresh list
-                        updateUIListLocal();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-
-    }
 
     public OnClickListener radioButtonServerListener = new OnClickListener() {
         @Override
@@ -196,19 +175,6 @@ public class ListQuizzes extends Activity {
         }
     };*/
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            Quiz updatedQuiz = quizzesL.get(requestCode);
-            Bundle b = getIntent().getExtras();
-            double result = b.getDouble("result");
-
-            // check result for null
-            // do something with result
-        }
-
-    }
-
     private void updateUIListLocal() {
 
         if (quizzesL != null && quizzesL.size() > 0) {
@@ -248,64 +214,6 @@ public class ListQuizzes extends Activity {
 
         this.quizzesS.add(sQuiz1);
         this.quizzesS.add(sQuiz2);
-    }
-
-    // This method creates a context Menu for the quiz list
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
-/*        int lId = listViewL.getId();
-        int sId = listViewS.getId();
-        int currId = v.getId();*/
-
-        if (v.getId() == this.listViewL.getId()) {
-            String quizName = ((Quiz) adapterL.getItem(aInfo.position)).toString();
-            menu.setHeaderTitle("Options for " + quizName);
-            menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
-            menu.add(1, 1, 2, "Delete quiz");
-        }
-
-        if (v.getId() == this.listViewS.getId()) {
-            String quizName = ((String) adapterS.getItem(aInfo.position));
-            menu.setHeaderTitle("Options for " + quizName);
-            menu.add(1, 0, 1, "Download quiz"); // groupId, itemId, orderIndex, name
-            //menu.add(1, 1, 2, "Delete quiz")
-        }
-
-    }
-
-    // This method called when user selects an Item in the Context menu
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int itemId = item.getItemId();
-
-        ListView listV = (ListView) aInfo.targetView.getParent();
-
-
-/*        int currId = l.getId();
-        int lId = listViewL.getId();
-        int sId = listViewS.getId();*/
-
-        if (listV.getId() == this.listViewL.getId()) {  // Local ListView
-
-            if (itemId == 1) { // delete quiz
-                //Toast.makeText(this, "You will delete " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
-                removeQuizFromLocalList(aInfo.position);
-            } else if (itemId == 0) { // edit quiz
-                Toast.makeText(this, "You will edit " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        if (listV.getId() == this.listViewS.getId()) { // ServerListView
-            if (itemId == 0) { // download quiz
-                Toast.makeText(this, "You will download " + quizzesS.get(aInfo.position), Toast.LENGTH_SHORT).show();
-            }
-        }
-        return true;
     }
 
     @Override
@@ -376,5 +284,119 @@ public class ListQuizzes extends Activity {
 
         return ret;
     }
+
+
+
+    // This method creates a context Menu for the quiz list
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        if (v.getId() == this.listViewL.getId()) {
+            String quizName = ((Quiz) adapterL.getItem(aInfo.position)).toString();
+            menu.setHeaderTitle("Options for " + quizName);
+            menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
+            menu.add(1, 1, 2, "Delete quiz");
+        }
+
+        if (v.getId() == this.listViewS.getId()) {
+            String quizName = ((String) adapterS.getItem(aInfo.position));
+            menu.setHeaderTitle("Options for " + quizName);
+            menu.add(1, 0, 1, "Download quiz"); // groupId, itemId, orderIndex, name
+            //menu.add(1, 1, 2, "Delete quiz")
+        }
+    }
+
+    // This method called when user selects an Item in the Context menu
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int itemId = item.getItemId();
+
+        ListView listV = (ListView) aInfo.targetView.getParent();
+
+        if (listV.getId() == this.listViewL.getId()) {  // Local ListView
+
+            if (itemId == 1) { // delete quiz
+                //Toast.makeText(this, "You will delete " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+                removeQuizFromLocalList(aInfo.position);
+            } else if (itemId == 0) { // edit quiz
+                //Toast.makeText(this, "You will edit " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+                editQuiz(aInfo.position);
+            }
+        }
+
+        if (listV.getId() == this.listViewS.getId()) { // ServerListView
+            if (itemId == 0) { // download quiz
+                Toast.makeText(this, "You will download " + quizzesS.get(aInfo.position), Toast.LENGTH_SHORT).show();
+            }
+        }
+        return true;
+    }
+
+    public void removeQuizFromLocalList(int i) {
+        final int idToBeDeleted = i;
+        AlertDialog.Builder builder = new AlertDialog.Builder(ListQuizzes.this);
+        final TextView msg = new TextView(this);
+        builder.setView(msg);
+
+        builder.setMessage("Really delete quiz?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        quizzesL.remove(idToBeDeleted);
+                        //refresh list
+                        updateUIListLocal();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void editQuiz(int i) {
+        Quiz quizToSend = quizzesL.get(i);
+        // prepare new Intent
+        Intent intent = new Intent(getApplicationContext(), EditQuiz.class);
+        intent.putExtra("Quiz", quizToSend);
+        startActivityForResult(intent, EDIT_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == DO_CODE) {
+                Quiz updatedQuiz = quizzesL.get(requestCode);
+                Bundle b = getIntent().getExtras();
+                double result = b.getDouble("result");
+                // check result for null
+                // do something with result
+            }
+
+            if (requestCode == EDIT_CODE) {
+                // handle edited quiz
+                // retrieve original quiz by name; replace with edited one
+                Quiz editedQuiz = (Quiz) data.getSerializableExtra("Quiz");
+                if (editedQuiz != null) {
+                    int found = -1;
+                    for (int i=0; found == -1 && i<quizzesL.size(); i++) {
+                        if (quizzesL.get(i).getName().equals(editedQuiz.getName())) {
+                            found = i;
+                        }
+                    }
+                    if (found != -1) {
+                        quizzesL.set(found, editedQuiz);
+                    }
+                }
+            }
+        }
+    }
+
 
 }

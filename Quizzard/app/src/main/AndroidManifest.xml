@@ -28,6 +28,12 @@
             android:launchMode="singleTop"/>
 
         <activity
+            android:name="se.bth.students.quizzard.EditQuiz"
+            android:label="Edit Quiz"
+            android:parentActivityName="se.bth.students.quizzard.ListQuizzes"
+            android:launchMode="singleTop"/>
+
+        <activity
             android:name="se.bth.students.quizzard.AddQuestion"
             android:label="Add question"
             android:parentActivityName="se.bth.students.quizzard.CreateQuiz"
@@ -43,7 +49,7 @@
         <!-- Ändra parentActivityName till ListQuizzes när vi har länken -->
         <activity
             android:name="se.bth.students.quizzard.DoQuiz"
-            android:label="List Quizzes"
+            android:label="Do Quiz"
             android:parentActivityName="se.bth.students.quizzard.MainActivity" />
 
     </application>

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 /**
  * Created by mihai on 2014-12-02.
  */
-public class CreateQuiz extends Activity {
+public class EditQuiz extends Activity {
 
     Quiz quiz;
     //static public final int NEW_QUESTION_CODE = 1;
@@ -42,21 +42,25 @@ public class CreateQuiz extends Activity {
     ArrayList<String> list = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     boolean NO_SAVE_TO_DISK = false;
-    static final String FILE_CREATE_QUIZ = "create_quiz";
+    static final String FILE_EDIT_QUIZ = "edit_quiz";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_quiz);
+        setContentView(R.layout.edit_quiz);
 
         // restore saved state
-        loadQuizFromDisk();
+        loadQuizFromDisk(); // to recover after forced destroy (for example rotation)
+
+        if (quiz == null) { // read object from Intent
+            quiz = (Quiz) getIntent().getSerializableExtra("Quiz");
+        }
 
         // restore state of text fields
-        if (savedInstanceState != null) {
-            EditText quiz_name_txt = (EditText) findViewById(R.id.quiz_name_txt);
-            EditText course_txt = (EditText) findViewById(R.id.course_txt);
-            EditText author_txt = (EditText) findViewById(R.id.author_txt);
+        if (savedInstanceState != null) { // after forced destroy
+            EditText quiz_name_txt = (EditText) findViewById(R.id.edit_quiz_name_txt);
+            EditText course_txt = (EditText) findViewById(R.id.edit_course_txt);
+            EditText author_txt = (EditText) findViewById(R.id.edit_author_txt);
 
             String quiz_name = savedInstanceState.getString("quiz_name");
             String course = savedInstanceState.getString("course");
@@ -66,8 +70,29 @@ public class CreateQuiz extends Activity {
             course_txt.setText(course);
             author_txt.setText(author);
         }
+        else { // populate from Intent
+            EditText quiz_name_txt = (EditText) findViewById(R.id.edit_quiz_name_txt);
+            EditText course_txt = (EditText) findViewById(R.id.edit_course_txt);
+            EditText author_txt = (EditText) findViewById(R.id.edit_author_txt);
 
-        q_list = (ListView) findViewById(R.id.questions_list);
+            String newName = "",newCourse ="",newAuthor="";
+            if (quiz != null) {
+                newName = quiz.getName();
+                newCourse = quiz.getCourse();
+                newAuthor = quiz.getAuthor();
+            }
+            quiz_name_txt.setText(newName);
+            course_txt.setText(newCourse);
+            author_txt.setText(newAuthor);
+
+            // name cannot be changed when editing a Quiz
+            quiz_name_txt.setFocusable(false);
+            quiz_name_txt.setFocusableInTouchMode(false);
+            quiz_name_txt.setClickable(false);
+
+        }
+
+        q_list = (ListView) findViewById(R.id.edit_questions_list);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         q_list.setAdapter(adapter);
         updateUIList();
@@ -75,8 +100,8 @@ public class CreateQuiz extends Activity {
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView arg0, View arg1,
-                                           int arg2, long arg3) {
-              //  Toast.makeText(getBaseContext(), "Long Clicked:" + adapter.getItem(arg2) , Toast.LENGTH_SHORT).show();
+                                    int arg2, long arg3) {
+                //  Toast.makeText(getBaseContext(), "Long Clicked:" + adapter.getItem(arg2) , Toast.LENGTH_SHORT).show();
                 // get question obj
                 Question questionToSend = null;
                 String question_txt = adapter.getItem(arg2);
@@ -104,18 +129,18 @@ public class CreateQuiz extends Activity {
         q_list.setOnItemClickListener(itemClickListener);
 
         //button listener
-        Button addQ_btn = (Button) findViewById(R.id.add_question_btn);
+        Button addQ_btn = (Button) findViewById(R.id.edit_add_question_btn);
         addQ_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                EditText name = (EditText) findViewById(R.id.quiz_name_txt);
+                EditText name = (EditText) findViewById(R.id.edit_quiz_name_txt);
                 String nameQuiz = name.getText().toString();
 
                 if (nameQuiz != null && !nameQuiz.equals("")) {
 
-                    EditText course = (EditText) findViewById(R.id.course_txt);
+                    EditText course = (EditText) findViewById(R.id.edit_course_txt);
                     String courseName = course.getText().toString();
-                    EditText author = (EditText) findViewById(R.id.author_txt);
+                    EditText author = (EditText) findViewById(R.id.edit_author_txt);
                     String authorName = author.getText().toString();
                     if (quiz == null || quiz.getName().equals("N/A")) // make new quiz obj
                         quiz = new Quiz(nameQuiz, courseName, authorName);
@@ -133,22 +158,25 @@ public class CreateQuiz extends Activity {
     }
 
     public void saveQuiz(View v) {
-        EditText quiz_name_txt = (EditText) findViewById(R.id.quiz_name_txt);
+        EditText quiz_name_txt = (EditText) findViewById(R.id.edit_quiz_name_txt);
         String quizName = quiz_name_txt.getText().toString();
 
-        if (!quizName.equals("") && !quizName.equals("N/A")) {
-            if (quiz == null) {
-                EditText course_txt = (EditText) findViewById(R.id.course_txt);
-                String course = course_txt.getText().toString();
-                EditText author_txt = (EditText) findViewById(R.id.author_txt);
-                String author = author_txt.getText().toString();
-                quiz = new Quiz(quizName, course, author);
-            }
+        if (quiz != null && !quizName.equals("") && !quizName.equals("N/A")) {
+            EditText course_txt = (EditText) findViewById(R.id.edit_course_txt);
+            String course = course_txt.getText().toString();
+            EditText author_txt = (EditText) findViewById(R.id.edit_author_txt);
+            String author = author_txt.getText().toString();
+            quiz.setCourse(course);
+            quiz.setAuthor(author);
+
             Intent resultIntent = new Intent();
             resultIntent.putExtra("Quiz", this.quiz);
             setResult(Activity.RESULT_OK, resultIntent);
             NO_SAVE_TO_DISK = true;
             finish();
+        }
+        else if (quiz == null) {
+            quiz = new Quiz();
         }
         else Toast.makeText(getBaseContext(), "Quiz needs at least a title." , Toast.LENGTH_SHORT).show();
     }
@@ -165,7 +193,7 @@ public class CreateQuiz extends Activity {
                     //Log.i("mytag", "the quiz now has: " + this.quiz.getQuestions().size() + " questions");
 
                     // metadata on quiz can't be changed from now on
-                    EditText quizNameTxt = (EditText) findViewById(R.id.quiz_name_txt);
+                    EditText quizNameTxt = (EditText) findViewById(R.id.edit_quiz_name_txt);
                     quizNameTxt.setFocusable(false);
                     quizNameTxt.setFocusableInTouchMode(false);
                     quizNameTxt.setClickable(false);
@@ -183,7 +211,7 @@ public class CreateQuiz extends Activity {
                     Toast.makeText(getBaseContext(), "New question saved" , Toast.LENGTH_SHORT).show();
 
                     // start new AddQuestion activity
-                    Button addQuestion_btn = (Button) findViewById(R.id.add_question_btn);
+                    Button addQuestion_btn = (Button) findViewById(R.id.edit_add_question_btn);
                     addQuestion_btn.performClick(); // simulates click of button
                 }
             } else if (requestCode >= 0 && requestCode < quiz.getQuestions().size()) { // an edited question was sent back
@@ -213,7 +241,7 @@ public class CreateQuiz extends Activity {
 
     @Override
     public void onResume() {
-        TextView questions_tv = (TextView) findViewById(R.id.questions_list_tv);
+        TextView questions_tv = (TextView) findViewById(R.id.edit_questions_list_tv);
         if (list.size() == 0) {
             questions_tv.setVisibility(View.INVISIBLE);
         }
@@ -224,7 +252,7 @@ public class CreateQuiz extends Activity {
     @Override
     public void onBackPressed() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(CreateQuiz.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditQuiz.this);
         final TextView msg = new TextView(this);
         builder.setView(msg);
 
@@ -243,7 +271,7 @@ public class CreateQuiz extends Activity {
 
         AlertDialog alertDialog = builder.create();
 
-        EditText quiz_name_txt = (EditText) findViewById(R.id.quiz_name_txt);
+        EditText quiz_name_txt = (EditText) findViewById(R.id.edit_quiz_name_txt);
         String quizName = quiz_name_txt.getText().toString();
         if (quizName != null && !quizName.equals("") && !quizName.equals("N/A"))
             alertDialog.show();
@@ -272,9 +300,9 @@ public class CreateQuiz extends Activity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        String quiz_name = ((EditText) findViewById(R.id.quiz_name_txt)).getText().toString();
-        String course = ((EditText) findViewById(R.id.course_txt)).getText().toString();
-        String author = ((EditText) findViewById(R.id.author_txt)).getText().toString();
+        String quiz_name = ((EditText) findViewById(R.id.edit_quiz_name_txt)).getText().toString();
+        String course = ((EditText) findViewById(R.id.edit_course_txt)).getText().toString();
+        String author = ((EditText) findViewById(R.id.edit_author_txt)).getText().toString();
         savedInstanceState.putString("quiz_name", quiz_name);
         savedInstanceState.putString("course", course);
         savedInstanceState.putString("author", author);
@@ -297,7 +325,7 @@ public class CreateQuiz extends Activity {
 
     private void saveQuizToDisk() {
         File dir = getFilesDir();
-        File file = new File (dir, FILE_CREATE_QUIZ);
+        File file = new File (dir, FILE_EDIT_QUIZ);
         try{
 
             if(!file.exists())
@@ -319,7 +347,7 @@ public class CreateQuiz extends Activity {
 
     private void loadQuizFromDisk() {
         File dir = getFilesDir();
-        File file = new File (dir, FILE_CREATE_QUIZ);
+        File file = new File (dir, FILE_EDIT_QUIZ);
 
         try {
 
@@ -332,13 +360,14 @@ public class CreateQuiz extends Activity {
             in.close();
         }
         catch(Exception ex){
+            quiz = null;
         }
 
     }
 
     private boolean deleteBackupFile() {
         File dir = getFilesDir();
-        File file = new File(dir, FILE_CREATE_QUIZ);
+        File file = new File(dir, FILE_EDIT_QUIZ);
         boolean deleted = file.delete();
         return deleted;
 
