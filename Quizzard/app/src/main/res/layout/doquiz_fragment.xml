@@ -11,20 +11,56 @@
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <LinearLayout
+        android:id="@+id/answerscontainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/questionText"
+        >
+
+    </LinearLayout>
+
     <RadioGroup
         android:id="@+id/doQuizRadioGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/questionText"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/answerscontainer"
+        >
+
     </RadioGroup>
+    <LinearLayout
+        android:id="@+id/doquizfragment_lower_separator"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_below="@+id/doQuizRadioGroup"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp">
+    </LinearLayout>
+
     <TextView
         android:id="@+id/questionIndexText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/doQuizRadioGroup"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/doquizfragment_lower_separator"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit answers"
+        android:id="@+id/SubmitAnswers"
+        android:onClick="onClickSubmitButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="#ff000000" /> -->
 
 </RelativeLayout>

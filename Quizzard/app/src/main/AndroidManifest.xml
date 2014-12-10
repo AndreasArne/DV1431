@@ -45,12 +45,15 @@
             android:parentActivityName="se.bth.students.quizzard.CreateQuiz"
             />
 
-
-        <!-- Ändra parentActivityName till ListQuizzes när vi har länken -->
         <activity
             android:name="se.bth.students.quizzard.DoQuiz"
             android:label="Do Quiz"
-            android:parentActivityName="se.bth.students.quizzard.MainActivity" />
+            android:parentActivityName="se.bth.students.quizzard.ListQuizzes" />
+
+        <activity
+            android:name="se.bth.students.quizzard.ScoreScreen"
+            android:label="Score"
+            android:parentActivityName="se.bth.students.quizzard.ListQuizzes" />
 
     </application>
 
