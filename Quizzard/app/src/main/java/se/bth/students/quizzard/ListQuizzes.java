@@ -36,7 +36,6 @@ public class ListQuizzes extends Activity {
     private static final int SERVER_LIST_ID = 2;
     private static final int CURR_LIST_ID = 3;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,11 +102,7 @@ public class ListQuizzes extends Activity {
         // populate Server quizzes with mock-up objects
         mockUpServer();
 
-
         updateUIListLocal();
-
-
-
 
         //Toast.makeText(getApplicationContext(), quizzes.get(0).getAuthor() + quizzes.get(1).getCourse(), Toast.LENGTH_LONG).show();
         //Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
@@ -180,7 +175,7 @@ public class ListQuizzes extends Activity {
 
     private void updateUIListLocal() {
 
-        if (quizzesL != null) {
+        if (quizzesL != null && quizzesL.size() > 0) {
             // update UI with list of questions
             list.clear();
             for (Quiz q : quizzesL) {
@@ -189,13 +184,15 @@ public class ListQuizzes extends Activity {
             }
             adapter.notifyDataSetChanged();
         }
+        else { // just clean up the list view
+            LinearLayout l = (LinearLayout) findViewById(R.id.listview_container);
+            l.removeAllViews();
+        }
     }
 
     private void updateUIListServer() {
         Toast.makeText(getApplicationContext(), "Coming soon :)", Toast.LENGTH_SHORT).show();
-
-
-        if (quizzesS != null) {
+        if (quizzesS != null && quizzesS.size() > 0) {
             // update UI with list of questions
             list.clear();
             for (Quiz q : quizzesS) {
@@ -203,6 +200,10 @@ public class ListQuizzes extends Activity {
                 list.add(q);
             }
             adapter.notifyDataSetChanged();
+        }
+        else { // just clean up the list view
+            LinearLayout l = (LinearLayout) findViewById(R.id.listview_container);
+            l.removeAllViews();
         }
     }
 
@@ -229,9 +230,9 @@ public class ListQuizzes extends Activity {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        int lId = listViewL.getId();
+/*        int lId = listViewL.getId();
         int sId = listViewS.getId();
-        int currId = v.getId();
+        int currId = v.getId();*/
 
         if (v.getId() == this.listViewL.getId()) {
             String quizName = ((Quiz) adapter.getItem(aInfo.position)).toString();
@@ -265,9 +266,9 @@ public class ListQuizzes extends Activity {
         ListView l = (ListView) aInfo.targetView.getParent();
 
 
-        int currId = l.getId();
+/*        int currId = l.getId();
         int lId = listViewL.getId();
-        int sId = listViewS.getId();
+        int sId = listViewS.getId();*/
 
         if (l.getId() == this.listViewL.getId()) {  // Local ListView
 
