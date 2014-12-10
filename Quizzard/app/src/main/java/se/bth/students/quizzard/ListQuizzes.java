@@ -1,6 +1,7 @@
 package se.bth.students.quizzard;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
@@ -18,6 +19,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -41,6 +47,8 @@ public class ListQuizzes extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_quizzes);
 
+        quizzesL = loadLocalQuizzesFromDisk();
+
         buttonServer = (RadioButton) findViewById(R.id.radioButtonServer);
         buttonServer.setOnClickListener(radioButtonServerListener);
         buttonLocal = (RadioButton) findViewById(R.id.radioButtonLocal);
@@ -63,7 +71,7 @@ public class ListQuizzes extends Activity {
 
         //buttonFireList = (Button)findViewById(R.id.buttonFireList);
         //buttonFireList.setOnClickListener(buttonFireListListener);
-        quizzesL = (ArrayList<Quiz>) getIntent().getSerializableExtra("quizzes");
+        //quizzesL = (ArrayList<Quiz>) getIntent().getSerializableExtra("quizzes");
 
         adapter = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1, list);
         // adapter = new ItemView(this, quizzes);
@@ -76,23 +84,33 @@ public class ListQuizzes extends Activity {
             @Override
             public void onItemClick(AdapterView av, View v,
                                     int position, long id) {
-                // get quiz obj
-                Quiz quizToSend = null;
-                // select right list of quizzes (local or server)
-                ArrayList<Quiz> quizzes;
-                RadioButton rb1 = (RadioButton) findViewById(R.id.radioButtonLocal);
-                if (rb1.isChecked())
-                    quizzes = quizzesL;
-                else quizzes = quizzesS;
 
-                if (quizzes != null)
-                    quizToSend = quizzes.get(position);
+        int lId = listViewL.getId();
+        int sId = listViewS.getId();
+        int currId = av.getId();
 
-                // start the DoQuiz activity
-                if (quizToSend != null) {
-                    Intent i = new Intent(getApplicationContext(), DoQuiz.class);
-                    i.putExtra("Quiz", quizToSend);
-                    startActivityForResult(i, position);
+                if (av.getId() == listViewL.getId()) { // action for short click on item in Local List
+                    // get quiz obj
+                    Quiz quizToSend = null;
+                    // select right list of quizzes (local or server)
+                    ArrayList<Quiz> quizzes;
+                    RadioButton rb1 = (RadioButton) findViewById(R.id.radioButtonLocal);
+                    if (rb1.isChecked())
+                        quizzes = quizzesL;
+                    else quizzes = quizzesS;
+
+                    if (quizzes != null)
+                        quizToSend = quizzes.get(position);
+
+                    // start the DoQuiz activity
+                    if (quizToSend != null) {
+                        Intent i = new Intent(getApplicationContext(), DoQuiz.class);
+                        i.putExtra("Quiz", quizToSend);
+                        startActivityForResult(i, position);
+                    }
+                }
+                else if (av.getId() == listViewS.getId()) { // action for short click on item in Server List
+                    Toast.makeText(getApplicationContext(), "You will download " + quizzesS.get(position).toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -287,16 +305,51 @@ public class ListQuizzes extends Activity {
         return true;
     }
 
-    @Override protected void onDestroy() {
-        if (quizzesL != null ) {
-            saveQuizzesToDisk();
+    @Override
+    protected void onPause() {
+        if (quizzesL != null && quizzesL.size() > 0) {
+            saveLocalQuizzesToDisk();
         }
-        super.onDestroy();
+        super.onPause();
     }
 
-    private void saveQuizzesToDisk() { // just local quizzes are saved to disk
+    private void saveLocalQuizzesToDisk() {
+        File dir = getFilesDir();
+        File file = new File (dir, MainActivity.FILE_QUIZZES);
+        try{
+            if(!file.exists())
+                file.createNewFile();
 
+            FileOutputStream fout = getApplicationContext().openFileOutput(file.getName(), Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fout);
+            //writes serialized arraylist, containing quiz objects, to file
+            out.writeObject(quizzesL);
+            out.close();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
+    private ArrayList<Quiz> loadLocalQuizzesFromDisk() {
+        ArrayList<Quiz> ret = null;
+        File dir = getFilesDir();
+        File file = new File (dir, MainActivity.FILE_QUIZZES);
+
+        try {
+
+            FileInputStream fin = getApplicationContext().openFileInput(file.getName());
+            ObjectInputStream in = new ObjectInputStream(fin);
+
+            //reads in an arraylist, containing quiz objects.
+            ret = (ArrayList<Quiz>) in.readObject();
+
+            in.close();
+        }
+        catch(Exception ex){
+        }
+
+        return ret;
     }
 
 }

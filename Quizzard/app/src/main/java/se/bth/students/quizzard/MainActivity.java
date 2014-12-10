@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(),"List quizzes!",Toast.LENGTH_SHORT).show();
                 Intent listInt = new Intent(MainActivity.this,ListQuizzes.class);
-                listInt.putExtra("quizzes",quizzes);
+                //listInt.putExtra("quizzes",quizzes);
                 startActivity(listInt);
             }
         });
