@@ -13,6 +13,7 @@ public class Quiz implements Serializable{
     private String course = "some_course";
     private String name = "some_name";
     private String author = "some_author";
+    double lastResult = 0.0;
     boolean finished = false; // if false this quiz has still to be completed with new questions, right answers etc.
 
     public Quiz() {
@@ -61,5 +62,13 @@ public class Quiz implements Serializable{
 
     void addQuestion(Question question) {
         this.questions.add(question);
+    }
+
+    public double getLastResult() {
+        return lastResult;
+    }
+
+    public void setLastResult(double lastResult) {
+        this.lastResult = lastResult;
     }
 }

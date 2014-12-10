@@ -1,9 +1,11 @@
 package se.bth.students.quizzard;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -40,6 +42,28 @@ public class ListQuizzes extends Activity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         // adapter = new ItemView(this, quizzes);
         listView.setAdapter(adapter);
+
+
+        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView arg0, View arg1,
+                                    int position, long id) {
+                // get quiz obj
+                Quiz quizToSend = null;
+
+                if (quizzesL != null)
+                quizToSend = quizzesL.get(position);
+
+                // start the DoQuiz activity
+                if (quizToSend != null) {
+                    Intent i = new Intent(getApplicationContext(), DoQuiz.class);
+                    i.putExtra("Quiz", quizToSend);
+                    startActivityForResult(i, position);
+                }
+            }
+        };
+        listView.setOnItemClickListener(itemClickListener);
+
         updateUIListLocal();
 
         // populate Server quizzes with mock-up objects
