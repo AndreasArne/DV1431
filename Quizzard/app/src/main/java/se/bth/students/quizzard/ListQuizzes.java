@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -48,6 +49,7 @@ public class ListQuizzes extends Activity {
 
     private static final int DO_CODE = 4;
     private static final int EDIT_CODE = 5;
+    private boolean BACK_PRESSED = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +57,31 @@ public class ListQuizzes extends Activity {
         setContentView(R.layout.list_quizzes);
 
         quizzesL = loadLocalQuizzesFromDisk();
+        boolean serverView = false;
+
+        if (savedInstanceState != null) {
+            serverView = savedInstanceState.getBoolean("serverView");
+        }
 
         buttonServer = (RadioButton) findViewById(R.id.radioButtonServer);
         buttonServer.setOnClickListener(radioButtonServerListener);
         buttonLocal = (RadioButton) findViewById(R.id.radioButtonLocal);
         buttonLocal.setOnClickListener(radioButtonLocalListener);
 
-        // default view is local
-        buttonLocal.setChecked(true);
-        buttonServer.setChecked(false);
         listViewL = new ListView (this);
         listViewS = new ListView(this);
-        currListView = listViewL;
+
+        if (serverView == false) {
+            // default view is local
+            buttonLocal.setChecked(true);
+            buttonServer.setChecked(false);
+            currListView = listViewL;
+        }
+        else {
+            buttonLocal.setChecked(false);
+            buttonServer.setChecked(true);
+            currListView = listViewS;
+        }
 
         listViewL.setId(LOCAL_LIST_ID);
         listViewS.setId(SERVER_LIST_ID);
@@ -119,10 +134,10 @@ public class ListQuizzes extends Activity {
         // populate Server quizzes with mock-up objects
         mockUpServer();
 
-        updateUIListLocal();
+        if (serverView == false)
+            updateUIListLocal();
+        else updateUIListServer();
 
-        //Toast.makeText(getApplicationContext(), quizzes.get(0).getAuthor() + quizzes.get(1).getCourse(), Toast.LENGTH_LONG).show();
-        //Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
     }
 
 
@@ -232,8 +247,21 @@ public class ListQuizzes extends Activity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        boolean serverView = false;
+        RadioButton serverBtn = (RadioButton) findViewById(R.id.radioButtonServer);
+        if (serverBtn.isChecked()) {
+            serverView = true;
+        }
+        savedInstanceState.putBoolean("serverView", serverView);
+        super.onSaveInstanceState(savedInstanceState);
+
+    }
+
+    @Override
     public void onBackPressed() {
-        onDestroy();
+        this.BACK_PRESSED = true;
+        finish();
     }
 
     @Override
@@ -242,7 +270,10 @@ public class ListQuizzes extends Activity {
         Intent resultIntent = new Intent();
         resultIntent.putExtra("Quizzes", this.quizzesL);
         setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        if (this.BACK_PRESSED == true) { // only finish if Back button was pressed (don't finish on phone rotation)
+            this.BACK_PRESSED = false;
+            finish();
+        }
         super.onDestroy();
     }
 
