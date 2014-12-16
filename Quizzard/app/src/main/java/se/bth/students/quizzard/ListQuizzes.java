@@ -248,6 +248,9 @@ public class ListQuizzes extends Activity {
     @Override
     public void onBackPressed() {
         this.BACK_PRESSED = true;
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("Quizzes", this.quizzesL);
+        setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
 

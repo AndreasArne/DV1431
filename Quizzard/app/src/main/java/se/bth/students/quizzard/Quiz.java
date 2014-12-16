@@ -23,8 +23,8 @@ public class Quiz implements Serializable{
     }
 
     public Quiz(String name, String course, String author) {
-        this.course = course;
         this.name = name;
+        this.course = course;
         this.author = author;
     }
 

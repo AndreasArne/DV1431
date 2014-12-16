@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.File;
@@ -42,19 +43,23 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         quizzes = new ArrayList<Quiz>();
 
-        //deleteQuizzesFromDisk(); // DEBUGGING! DELETE LATER
-        readQuizzes();
+        if (savedInstanceState == null) {
+            readQuizzes(); // only read from disk at first creation
+            // load some pre-made quizzes (Sports, Languages) to try the app without needing to create own quizzes
+        }
+
+        if (quizzes.size() == 0)
+            loadStartupQuizzes(); // comment this out to skip loading pre-made quizzes
 
         //for shake event
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorListener = new ShakeListener();
         last = Calendar.getInstance();
-        //writeQuizzes();
-
-
+        
         mSensorListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
             public void onShake() {
                 now = Calendar.getInstance();
@@ -135,9 +140,16 @@ public class MainActivity extends Activity {
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
         writeQuizzes();
+
         super.onPause();
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("firstLoad", false);
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
     private void writeQuizzes(){
         //////////
@@ -241,5 +253,147 @@ public class MainActivity extends Activity {
         File dir = getFilesDir();
         File file = new File(dir, FILE_QUIZZES);
         boolean deleted = file.delete();
+    }
+
+    // start-up quizzes (to be able to test the app without first manually creating quizzes)
+    private void loadStartupQuizzes() {
+        ArrayList<Quiz> startQuizzes = null;
+        startQuizzes = getStartQuizzes();
+        if (startQuizzes != null) {
+            this.quizzes = startQuizzes;
+        }
+
+    }
+
+    private ArrayList<Quiz> getStartQuizzes() {
+        ArrayList<Quiz> ret = new ArrayList<Quiz>();
+        Quiz q1 = new Quiz("Sports", "DV1234", "A sports fan");
+        ArrayList<Question> questions = new ArrayList<Question>();
+        Question question = new Question("How many players does a soccer team have on field?");
+        ArrayList<Answer> answers = new ArrayList<Answer>();
+        Answer a1 = new Answer("15", false);
+        Answer a2 = new Answer("7", false);
+        Answer a3 = new Answer("11", true);
+        Answer a4 = new Answer ("10", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("Which player has scored most goals ever in Champions League?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Diego Maradona", false);
+        a2 = new Answer("Lionel Messi", true);
+        a3 = new Answer("Cristiano Ronaldo", false);
+        a4 = new Answer("Steven Gerrard", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("Which of the following countries have organized the World Cup at least once?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Portugal", false);
+        a2 = new Answer("Mexico", true);
+        a3 = new Answer("Peru", false);
+        a4 = new Answer("Brazil", true);
+        Answer a5 = new Answer("Italy", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        answers.add(a5);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("Which Romanian was the first female gymnast to ever get maximum grade 10 at the Olympic Games, in 1976?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Simona Halep", false);
+        a2 = new Answer("Nadia Comaneci", true);
+        a3 = new Answer("Monica Seles", false);
+        a4 = new Answer("Elena Ceausescu", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        ret.add(q1);
+
+        q1 = new Quiz("Languages", "DV1235", "A language-interested person");
+        questions = new ArrayList<Question>();
+        question = new Question("Which two languages in the list have common roots?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("English", false);
+        a2 = new Answer("Russian", false);
+        a3 = new Answer("Estonian", true);
+        a4 = new Answer ("Italian", false);
+        a5 = new Answer("Hungarian", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        answers.add(a5);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What does the Latin expression 'Veni, vidi, vici' mean?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Came, seen, won", true);
+        a2 = new Answer("Ate, drank, slept", false);
+        a3 = new Answer("Came, won, seen", false);
+        a4 = new Answer("Drank, ate, slept", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What language is spoken in the Spanish city of Barcelona?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Spanish", false);
+        a2 = new Answer("Gallic", false);
+        a3 = new Answer("Catalan", true);
+        a4 = new Answer("Arabic", false);
+
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("In which two countries are dialects of the same language spoken by the majority of the population?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("France", false);
+        a2 = new Answer("Saudi Arabia", false);
+        a3 = new Answer("Portugal", true);
+        a4 = new Answer("India", false);
+        a5 = new Answer("Brazil", true);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        answers.add(a5);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        ret.add(q1);
+
+        return ret;
     }
 }
