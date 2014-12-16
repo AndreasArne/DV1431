@@ -76,6 +76,8 @@ public class ListQuizzes extends Activity {
             buttonLocal.setChecked(true);
             buttonServer.setChecked(false);
             currListView = listViewL;
+            Toast.makeText(getApplicationContext(), "Long tap for quiz options" , Toast.LENGTH_SHORT).show();
+
         }
         else {
             buttonLocal.setChecked(false);
@@ -174,21 +176,6 @@ public class ListQuizzes extends Activity {
             updateUIListLocal();
         }
     };
-
-/*    public OnClickListener buttonFireListListener= new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(buttonLocal.isChecked())
-            {
-                listLocalQuiz();
-            }
-            else if(buttonServer.isChecked())
-            {
-                listServerQuiz();
-            }
-
-        }
-    };*/
 
     private void updateUIListLocal() {
 
@@ -329,13 +316,13 @@ public class ListQuizzes extends Activity {
             menu.setHeaderTitle("Options for " + quizName);
             menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
             menu.add(1, 1, 2, "Delete quiz");
+            menu.add(1, 2, 3, "Upload quiz");
         }
 
         if (v.getId() == this.listViewS.getId()) {
             String quizName = ((String) adapterS.getItem(aInfo.position));
             menu.setHeaderTitle("Options for " + quizName);
             menu.add(1, 0, 1, "Download quiz"); // groupId, itemId, orderIndex, name
-            //menu.add(1, 1, 2, "Delete quiz")
         }
     }
 
@@ -356,6 +343,8 @@ public class ListQuizzes extends Activity {
             } else if (itemId == 0) { // edit quiz
                 //Toast.makeText(this, "You will edit " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
                 editQuiz(aInfo.position);
+            } else if (itemId == 2) { // upload quiz
+                Toast.makeText(this, "You will upload " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
             }
         }
 
