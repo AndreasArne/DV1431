@@ -51,6 +51,11 @@ public class MainActivity extends Activity {
             readQuizzes(); // only read from disk at first creation
             // load some pre-made quizzes (Sports, Languages) to try the app without needing to create own quizzes
         }
+        else {
+            ArrayList<Quiz> tempQuizzes = (ArrayList<Quiz>) savedInstanceState.getSerializable("quizzes");
+            if (tempQuizzes != null && tempQuizzes.size() > 0)
+                this.quizzes = tempQuizzes;
+        }
 
         if (quizzes.size() == 0)
             loadStartupQuizzes(); // comment this out to skip loading pre-made quizzes
@@ -148,6 +153,7 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putBoolean("firstLoad", false);
+        savedInstanceState.putSerializable("quizzes", this.quizzes);
         super.onSaveInstanceState(savedInstanceState);
     }
 
