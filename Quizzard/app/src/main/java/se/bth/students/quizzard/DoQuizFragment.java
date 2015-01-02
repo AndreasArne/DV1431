@@ -3,6 +3,7 @@ package se.bth.students.quizzard;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,13 +101,21 @@ public class DoQuizFragment extends Fragment implements Serializable {
                 cb.setText(a);
                 cb.setChecked(false);
                 cb.setId(i);
-                cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                          @Override
-                          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                              cb.setChecked(isChecked);
-                          }
-                      }
-                );
+                cb.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        if(cb.isChecked()){
+                            cb.setChecked(true);
+                            System.out.println("Checked");
+
+                        }else{
+                            cb.setChecked(false);
+                            System.out.println("Un-Checked");
+                        }
+                    }
+                });
                 checkBoxes.add(cb);
                 answersContainer.addView(cb);
                 i++;
@@ -130,29 +139,39 @@ public class DoQuizFragment extends Fragment implements Serializable {
 
     // Check if the current answer is correct
     public boolean isRightAnswer() {
+
+
         if (multipleCorrect) {
+            Log.d("DoQuizFragment", "CHECKING ANSWERS");
+            Log.d("DoQuizFragment", correctAnswers.toString());
+            Log.d("DoQuizFragment", checkBoxes.toString());
+
             // 1. Check that all the correct answers are ticked
             for (int i : correctAnswers) {
                 if (!checkBoxes.get(i).isChecked()) {
+                    Log.d("DoQuizFragment", "Answer #" + i + " not ticked!");
                     return false;
                 }
+                Log.d("DoQuizFragment", "Answer #" + i + " IS ticked!");
             }
-            // 2. Verify the number of checked boxes
+            Log.d("DoQuizFragment", "Correct number of checked boxes.");
+
+            // 2. Look for incorrect ticks
             int count = 0;
             for (CheckBox cb : checkBoxes) {
                 if (cb.isChecked()) {
                     count++;
                 }
-                if (count != correctAnswers.size()) {
-                    return false;
-                }
             }
-        } else {
-            for (int i : correctAnswers) {
-                if (radioGroup.getCheckedRadioButtonId() != correctAnswers.get(0)) {
-                    return false;
-                }
+            if (count != correctAnswers.size()) {
+                Log.d("DoQuizFragment", "correctAnswers = " + correctAnswers.size() + ", count = " + count);
+                return false;
             }
+        } else { // Check radio button answer
+            if (radioGroup.getCheckedRadioButtonId() != correctAnswers.get(0)) {
+                return false;
+            }
+
         }
         return true;
     }
@@ -184,9 +203,6 @@ public class DoQuizFragment extends Fragment implements Serializable {
         listener.onClickSubmitButton(btn_submitAnswers);
     }
 
-    private void checkBoxListener(CheckBox cb) {
-
-    }
 
     // Returns a arraylist of the indices of the correct answers, e.g. [2, 4] if the correct answers are 2 and 4.
     private ArrayList<Integer> getCorrectAnswers(Question q) {

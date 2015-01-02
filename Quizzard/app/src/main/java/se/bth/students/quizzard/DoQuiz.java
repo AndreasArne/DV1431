@@ -33,7 +33,7 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
 
     private List<Fragment> createFragments() {
         currentQuiz = (Quiz)getIntent().getSerializableExtra("Quiz");
-
+        getActionBar().setTitle(currentQuiz.getName());
         questions = currentQuiz.getQuestions();
         List<Fragment> fList = new ArrayList<Fragment>();
 
