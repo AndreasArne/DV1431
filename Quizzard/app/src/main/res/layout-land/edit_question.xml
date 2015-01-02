@@ -8,19 +8,57 @@
         android:id="@+id/question_text"
         android:hint="Question..."
         android:background="@drawable/rectangle"
-        android:layout_height="80dp"
+        android:layout_height="50dp"
         android:layout_width="fill_parent"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:paddingLeft="10dp" />
 
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_horizontal">
+
+    <Button
+        android:id="@+id/add_answer_btn"
+        android:text="ADD ANSWER"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addAnswer"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/button_background"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"/>
+
+        <Button
+            android:id="@+id/save_question_btn"
+            android:text="SAVE QUESTION"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveQuestion"
+            android:background="@drawable/button_background"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            />
+
+        <Button
+            android:id="@+id/delete_question_btn"
+            android:text="DELETE QUESTION"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="deleteQuestion"
+            android:background="@drawable/button_background"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            />
 
         <RadioButton
             android:id="@+id/unique_radiobtn_edit"
@@ -36,24 +74,13 @@
             android:onClick="onMultipleRightAnswers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp" />
+             />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/add_answer_btn"
-        android:text="ADD ANSWER"
-        android:layout_gravity="right"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="addAnswer"
-        android:background="@drawable/button_background"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
-
-        />
-
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/answers_container"
         android:layout_width="fill_parent"
@@ -63,46 +90,10 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="10dp">
-
     </LinearLayout>
+    </ScrollView>
 
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:baselineAligned="false">
 
-        <Button
-            android:id="@+id/save_question_btn"
-            android:text="SAVE QUESTION"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="saveQuestion"
-            android:background="@drawable/button_background"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-
-            />
-
-        <Button
-            android:id="@+id/delete_question_btn"
-            android:text="DELETE QUESTION"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="deleteQuestion"
-            android:background="@drawable/button_background"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-
-            />
-
-    </LinearLayout>
 
 </LinearLayout>

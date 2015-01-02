@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
     android:id="@+id/list_quizzes_layout">
@@ -9,15 +10,13 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1"
-        >
+        android:weightSum="1">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            >
+            android:layout_gravity="right">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -25,7 +24,7 @@
                 android:text="Local"
                 android:id="@+id/radioButtonLocal"
                 android:checked="true"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp" />
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -33,15 +32,14 @@
                 android:text="Server"
                 android:id="@+id/radioButtonServer"
                 android:checked="false"
-                android:paddingRight="10dp"
-                 />
+                android:paddingRight="10dp" />
 
-<!--            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="List"
-                android:id="@+id/buttonFireList" />-->
+            <!--            <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="List"
+                            android:id="@+id/buttonFireList" />-->
 
         </LinearLayout>
 
@@ -53,16 +51,15 @@
             android:id="@+id/ListQuizzesTextView"
             android:layout_weight="0.04"
             android:paddingLeft="5dp"
-            android:paddingTop="10dp"
-            />
+            android:paddingTop="10dp" />
+
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listview_container">
-
-
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

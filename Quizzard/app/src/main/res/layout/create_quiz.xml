@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -39,7 +40,6 @@
     </LinearLayout>
 
 
-
     <Button
         android:id="@+id/add_question_btn"
         android:text="ADD QUESTION"
@@ -50,8 +50,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_background"
         android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        />
+        android:paddingRight="3dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,19 +66,9 @@
         android:layout_width="fill_parent"
         android:id="@+id/questions_list"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
 
-<!--    <Button
-        android:id="@+id/save_quiz_draft_btn"
-        android:text="SAVE QUIZ AS DRAFT"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_background"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"/>-->
+
 
     <Button
         android:id="@+id/save_quiz_btn"
@@ -91,6 +80,6 @@
         android:onClick="saveQuiz"
         android:background="@drawable/button_background"
         android:paddingLeft="3dp"
-        android:paddingRight="3dp"/>
+        android:paddingRight="3dp" />
 
 </LinearLayout>

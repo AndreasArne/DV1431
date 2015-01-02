@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/question_text"
+        android:hint="Question..."
+        android:background="@drawable/rectangle"
+        android:layout_height="50dp"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="10dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/add_answer_btn"
+            android:text="ADD ANSWER"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addAnswer"
+            android:background="@drawable/button_background"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+
+            />
+
+        <Button
+            android:id="@+id/save_question_and_quiz_btn"
+            android:text="SAVE AND ADD NEW"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveQuestionAddNew"
+            android:background="@drawable/button_background"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+
+            />
+
+        <Button
+            android:id="@+id/save_question_btn"
+            android:text="SAVE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveQuestion"
+            android:background="@drawable/button_background"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+
+            />
+
+
+        <RadioButton
+            android:id="@+id/unique_radiobtn"
+            android:text="Unique"
+            android:onClick="onUniqueRightAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/multiple_checkbox"
+            android:text="Multiple"
+            android:onClick="onMultipleRightAnswers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/answers_container"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="10dp">
+
+    </LinearLayout>
+
+</LinearLayout>
