@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 /**
  * Created by asdf on 2014-12-10.
+ * A score screen to be displayed when the player finishes a quiz.
  */
 public class ScoreScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {

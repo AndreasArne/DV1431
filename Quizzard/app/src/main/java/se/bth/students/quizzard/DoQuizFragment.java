@@ -133,35 +133,33 @@ public class DoQuizFragment extends Fragment implements Serializable {
             }
 
         }
-        // Only show the submit button on the last page
-        Button submitBtn  = (Button) view.findViewById(R.id.SubmitAnswers);
+        // Only show the submit answers button on the last page
+        Button btnSubmit  = (Button) view.findViewById(R.id.SubmitAnswers);
         if (this.questionIndex == this.nQuestions) {
-            submitBtn.setVisibility(View.VISIBLE);
+            btnSubmit.setVisibility(View.VISIBLE);
         } else {
-            submitBtn.setVisibility(View.INVISIBLE);
+            btnSubmit.setVisibility(View.INVISIBLE);
         }
 
         return view;
     }
 
-    // Check if the current answer is correct
+    /**
+     * Check if the current answer is correct
+     * @return
+     */
     public boolean isRightAnswer() {
-
-
+        // Checkboxes
         if (multipleCorrect) {
-            Log.d("DoQuizFragment", "CHECKING ANSWERS");
-            Log.d("DoQuizFragment", correctAnswers.toString());
-            Log.d("DoQuizFragment", checkBoxes.toString());
-
             // 1. Check that all the correct answers are ticked
             for (int i : correctAnswers) {
                 if (!checkBoxes.get(i).isChecked()) {
-                    Log.d("DoQuizFragment", "Answer #" + i + " not ticked!");
+//                    Log.d("DoQuizFragment", "Answer #" + i + " not ticked!");
                     return false;
                 }
-                Log.d("DoQuizFragment", "Answer #" + i + " IS ticked!");
+//                Log.d("DoQuizFragment", "Answer #" + i + " IS ticked!");
             }
-            Log.d("DoQuizFragment", "Correct number of checked boxes.");
+//            Log.d("DoQuizFragment", "Correct number of checked boxes.");
 
             // 2. Look for incorrect ticks
             int count = 0;
@@ -174,11 +172,10 @@ public class DoQuizFragment extends Fragment implements Serializable {
                 Log.d("DoQuizFragment", "correctAnswers = " + correctAnswers.size() + ", count = " + count);
                 return false;
             }
-        } else { // Check radio button answer
+        } else { // Radio buttons
             if (radioGroup.getCheckedRadioButtonId() != correctAnswers.get(0)) {
                 return false;
             }
-
         }
         return true;
     }
@@ -187,12 +184,17 @@ public class DoQuizFragment extends Fragment implements Serializable {
         return this.questionString;
     }
 
-    // Define the events that the fragment will use to communicate
+    /**
+     * Defines the events that the fragment will use to communicate
+     */
     public interface OnSubmitListener {
         public void onClickSubmitButton(View v);
     }
 
-    // Store the listener (activity) that will have events fired once the fragment is attached
+    /**
+     * Store the listener (activity) that will have events fired once the fragment is attached
+     * @param activity
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -204,14 +206,19 @@ public class DoQuizFragment extends Fragment implements Serializable {
         }
     }
 
-    // Fire the submit event in the parent when the user clicks submit in the fragment
+    /**
+     * Fire the submit event in the parent when the user clicks submit in the fragment
+     */
     public void onClickSubmit() {
         Button btn_submitAnswers = (Button) view.findViewById(R.id.SubmitAnswers);
         listener.onClickSubmitButton(btn_submitAnswers);
     }
 
-
-    // Returns a arraylist of the indices of the correct answers, e.g. [2, 4] if the correct answers are 2 and 4.
+    /**
+     * Returns an arraylist of the indices of the correct answers, e.g. [2, 4] if the correct answers are 2 and 4.
+     * @param q
+     * @return
+     */
     private ArrayList<Integer> getCorrectAnswers(Question q) {
         ArrayList<Integer> correctAnswerList = new ArrayList<Integer>();
         ArrayList<Answer> answers = q.getAnswers();
@@ -232,8 +239,9 @@ public class DoQuizFragment extends Fragment implements Serializable {
 
     }
 
-    // Save the instance state (radio buttons/check boxes)
-//    @Override
+    /**
+     * Save the instance state (radio buttons/check boxes)
+     */
     public void onPause() {
         selectedValues = new ArrayList<Integer>();
         //    Log.d("DoQuizzFragment", "getCheckedRadioButtonId() = " + radioGroup.getCheckedRadioButtonId());

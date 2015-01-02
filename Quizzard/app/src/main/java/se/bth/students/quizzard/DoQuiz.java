@@ -31,6 +31,10 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
 
     }
 
+    /**
+     * Create fragments, each fragments represents a question within the Quiz.
+     * @return
+     */
     private List<Fragment> createFragments() {
         currentQuiz = (Quiz)getIntent().getSerializableExtra("Quiz");
         getActionBar().setTitle(currentQuiz.getName());
@@ -45,7 +49,10 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
         return fList;
     }
 
-    // Create the score screen when the submit event fires in the fragment
+    /**
+     * Create the score screen when the submit event fires in the fragment
+     * @param v
+     */
     @Override
     public void onClickSubmitButton(View v) {
 
@@ -69,8 +76,9 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
         startActivityForResult(scoreScreenIntent, 0);
     }
 
-
-    // Private FragmentPagerAdapter class
+    /**
+     * Private FragmentPagerAdapter class used by DoQuiz
+     */
     private class DoQuizPageAdapter extends FragmentPagerAdapter {
         private List<Fragment> fragments;
 
