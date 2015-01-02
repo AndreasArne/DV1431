@@ -23,7 +23,7 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_quizz);
-        Toast.makeText(getApplicationContext(), "Slide the screen to view the next question", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Swipe to view the next question", Toast.LENGTH_SHORT).show();
         fragments = createFragments();
         pageAdapter = new DoQuizPageAdapter(getSupportFragmentManager(), fragments);
         ViewPager pager = (ViewPager)findViewById(R.id.viewpager);
