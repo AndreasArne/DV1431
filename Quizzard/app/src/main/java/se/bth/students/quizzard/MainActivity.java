@@ -307,15 +307,13 @@ public class MainActivity extends Activity {
         answers = new ArrayList<Answer>();
         a1 = new Answer("Portugal", false);
         a2 = new Answer("Mexico", true);
-        a3 = new Answer("Peru", false);
-        a4 = new Answer("Brazil", true);
-        Answer a5 = new Answer("Italy", true);
+        a3 = new Answer("Brazil", true);
+        a4 = new Answer("Italy", true);
         question.setQuestionType(Question.MULTIPLE);
         answers.add(a1);
         answers.add(a2);
         answers.add(a3);
         answers.add(a4);
-        answers.add(a5);
         question.attachAnswers(answers);
         q1.addQuestion(question);
 
@@ -342,14 +340,12 @@ public class MainActivity extends Activity {
         a1 = new Answer("English", false);
         a2 = new Answer("Russian", false);
         a3 = new Answer("Estonian", true);
-        a4 = new Answer ("Italian", false);
-        a5 = new Answer("Hungarian", true);
+        a4 = new Answer("Hungarian", true);
         question.setQuestionType(Question.MULTIPLE);
         answers.add(a1);
         answers.add(a2);
         answers.add(a3);
         answers.add(a4);
-        answers.add(a5);
         question.attachAnswers(answers);
         q1.addQuestion(question);
 
@@ -387,14 +383,12 @@ public class MainActivity extends Activity {
         a1 = new Answer("France", false);
         a2 = new Answer("Saudi Arabia", false);
         a3 = new Answer("Portugal", true);
-        a4 = new Answer("India", false);
-        a5 = new Answer("Brazil", true);
-        question.setQuestionType(Question.UNIQUE);
+        a4 = new Answer("Brazil", true);
+        question.setQuestionType(Question.MULTIPLE);
         answers.add(a1);
         answers.add(a2);
         answers.add(a3);
         answers.add(a4);
-        answers.add(a5);
         question.attachAnswers(answers);
         q1.addQuestion(question);
 
