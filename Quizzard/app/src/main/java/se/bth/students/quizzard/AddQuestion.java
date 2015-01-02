@@ -38,8 +38,19 @@ public class AddQuestion extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_question);
 
-        //this.quiz = (Quiz) getIntent().getSerializableExtra("Quiz");
-       // Log.i("mytag", "Received quiz: "+quiz.getName()+" in AddQuestion from CreateQuiz");
+        if (savedInstanceState != null) {
+            ArrayList<Answer> ans = (ArrayList<Answer>) savedInstanceState.getSerializable("answers");
+            if (ans != null && ans.size() > 0) {
+                this.answers = ans;
+                int type = savedInstanceState.getInt("question_type");
+                if (type == Question.UNIQUE) {
+                    refreshAnswerListU();
+                }
+                else if (type == Question.MULTIPLE) {
+                    refreshAnswerListM();
+                }
+            }
+        }
     }
 
     public void saveQuestion(View v) {
@@ -218,9 +229,6 @@ public class AddQuestion extends Activity  {
                 cb.setChecked(answers.get(i).isRight());
                 this.cbs.add(cb);
 
-
-
-
                 cb.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -328,7 +336,6 @@ public class AddQuestion extends Activity  {
                         ans.setIsRight(false);
                     }
                 }
-
             }
 
             this.cbs.clear();
@@ -357,5 +364,12 @@ public class AddQuestion extends Activity  {
             this.rbs.clear();
             refreshAnswerListU();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putSerializable("answers", this.answers);
+        savedInstanceState.putInt("question_type", this.question_type);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
