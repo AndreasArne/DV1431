@@ -61,6 +61,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="#ff000000" /> -->
+        android:textColor="#ff000000" />
 
 </RelativeLayout>

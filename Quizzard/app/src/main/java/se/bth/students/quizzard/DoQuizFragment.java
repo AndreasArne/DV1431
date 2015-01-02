@@ -1,12 +1,8 @@
 package se.bth.students.quizzard;
 
-// import android.app.Activity;
-// import android.content.Context;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -31,8 +25,11 @@ public class DoQuizFragment extends Fragment implements Serializable {
     public static final String ANSWER_ARRAYLIST = "ANSWER_ARRAYLIST";
     public static final String CORRECT_ANSWERS = "CORRECT_ANSWERS";
     public static final String Q_INDEX = "ANSWER_INDEX";
-    public static final String N_ANSWERS = "N_ANSWERS";
+    public static final String N_QUESTIONS = "N_ANSWERS";
     public static final String MULTIPLE_CORRECT = "MULTIPLE_CORRECT";
+
+    public int questionIndex;
+    public int nQuestions;
 
     private ArrayList<Integer> selectedValues;
 
@@ -47,14 +44,14 @@ public class DoQuizFragment extends Fragment implements Serializable {
 
 
 
-    public static final DoQuizFragment newInstance(Question q, int questionIndex, int nQuestions)
+    public static final DoQuizFragment newInstance(Question q, int questionIndexArg, int nQuestionsArg)
     {
 
         DoQuizFragment f = new DoQuizFragment();
         Bundle bdl = new Bundle(1);
         bdl.putString(QUESTION_TEXT, q.getQuestionText());
-        bdl.putInt(Q_INDEX , questionIndex);
-        bdl.putInt(N_ANSWERS, nQuestions);
+        bdl.putInt(Q_INDEX , questionIndexArg);
+        bdl.putInt(N_QUESTIONS, nQuestionsArg);
         bdl.putIntegerArrayList(CORRECT_ANSWERS, f.getCorrectAnswers(q));
         if (q.hasOneRightAnswer()) {
             bdl.putBoolean(MULTIPLE_CORRECT, false);
@@ -72,17 +69,22 @@ public class DoQuizFragment extends Fragment implements Serializable {
         f.setArguments(bdl);
         return f;
     }
-    //    doQuizRadioGroup
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         questionString = getArguments().getString(QUESTION_TEXT);
         ArrayList<String> answers = getArguments().getStringArrayList(ANSWER_ARRAYLIST);
+        this.questionIndex = getArguments().getInt(Q_INDEX);
+        this.nQuestions = getArguments().getInt(N_QUESTIONS);
 
         // Set question text
         view = inflater.inflate(R.layout.doquiz_fragment, container, false);
         TextView questionTextView = (TextView)view.findViewById(R.id.questionText);
         questionTextView.setText(questionString);
+
+        TextView questionIndexView = (TextView)view.findViewById(R.id.questionIndexText);
+        questionIndexView.setText(this.questionIndex + " / " + this.nQuestions);
 
         multipleCorrect = getArguments().getBoolean(MULTIPLE_CORRECT);
 
@@ -122,26 +124,6 @@ public class DoQuizFragment extends Fragment implements Serializable {
             }
 
         }
-        // Set page number text
-/*        int index = getArguments().getInt(Q_INDEX );
-        int nQuestions = getArguments().getInt(N_ANSWERS);
-        TextView questionIndexTextView = (TextView)view.findViewById(R.id.questionIndexText);
-        questionIndexTextView.setText( index + " / " + nQuestions);*/
-
-/*        Button btn_submitAnswers = (Button) view.findViewById(R.id.SubmitAnswers);
-        btn_submitAnswers.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-
-
-                Toast.makeText(getActivity(), "Score screen", Toast.LENGTH_SHORT).show();
-                Intent submitAnswersInt= new Intent(getActivity(),ScoreScreen.class);
-                submitAnswersInt.putExtra("quizzes",1);
-                startActivity(submitAnswersInt);
-            }
-        });*/
-
 
         return view;
     }
@@ -149,19 +131,19 @@ public class DoQuizFragment extends Fragment implements Serializable {
     // Check if the current answer is correct
     public boolean isRightAnswer() {
         if (multipleCorrect) {
-            // Check that all the correct answers are ticked
+            // 1. Check that all the correct answers are ticked
             for (int i : correctAnswers) {
                 if (!checkBoxes.get(i).isChecked()) {
                     return false;
                 }
             }
-            // Count the number of checked boxes
+            // 2. Verify the number of checked boxes
             int count = 0;
             for (CheckBox cb : checkBoxes) {
                 if (cb.isChecked()) {
                     count++;
                 }
-                if (count > correctAnswers.size()) {
+                if (count != correctAnswers.size()) {
                     return false;
                 }
             }
@@ -231,17 +213,8 @@ public class DoQuizFragment extends Fragment implements Serializable {
 //    @Override
     public void onPause() {
         selectedValues = new ArrayList<Integer>();
-
-
         //    Log.d("DoQuizzFragment", "getCheckedRadioButtonId() = " + radioGroup.getCheckedRadioButtonId());
         super.onPause();
     }
-/*
-    public void onDestroyView() {
-    }
 
-    public void onDestroy() {
-
-    }
-*/
 }

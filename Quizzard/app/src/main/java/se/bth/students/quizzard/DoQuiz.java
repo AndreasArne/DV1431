@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_quizz);
-
+        Toast.makeText(getApplicationContext(), "Slide the screen to view the next question", Toast.LENGTH_SHORT).show();
         fragments = createFragments();
         pageAdapter = new DoQuizPageAdapter(getSupportFragmentManager(), fragments);
         ViewPager pager = (ViewPager)findViewById(R.id.viewpager);
