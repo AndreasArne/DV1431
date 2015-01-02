@@ -33,7 +33,7 @@ public class ScoreScreen extends Activity {
         TextView score = (TextView)findViewById(R.id.score);
 
 
-        score.setText("Your scored " + nCorrect + " out of " + results.size() +
+        score.setText("You scored " + nCorrect + " out of " + results.size() +
                 " - " + (int)((double)nCorrect/results.size() *100) + "%!");
 
         LinearLayout scrollViewContent = (LinearLayout)findViewById(R.id.scrollViewContent);
