@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,6 +23,7 @@
        android:layout_below="@+id/txtQuizzard"
        android:layout_centerInParent="true"
        android:layout_centerVertical= "true"
+       android:background="@drawable/button_background"
        android:layout_width="200dp"
        android:layout_height="100dp"
        android:layout_marginTop="70dp"/>
@@ -31,21 +33,10 @@
         android:layout_below="@+id/list_Quizzes"
         android:text="Create Quiz"
         android:layout_centerInParent="true"
+        android:background="@drawable/button_background"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
         />
 
-    <!-- TILLFÄLLIG KNAPP, ta bort när vi har ListQuizzes -> DoQuiz-länken -->
-    <!--
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test DoQuiz"
-        android:id="@+id/test_do_Quiz"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textColor="#ff000000" /> -->
 </RelativeLayout>
