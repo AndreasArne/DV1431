@@ -133,6 +133,13 @@ public class DoQuizFragment extends Fragment implements Serializable {
             }
 
         }
+        // Only show the submit button on the last page
+        Button submitBtn  = (Button) view.findViewById(R.id.SubmitAnswers);
+        if (this.questionIndex == this.nQuestions) {
+            submitBtn.setVisibility(View.VISIBLE);
+        } else {
+            submitBtn.setVisibility(View.INVISIBLE);
+        }
 
         return view;
     }

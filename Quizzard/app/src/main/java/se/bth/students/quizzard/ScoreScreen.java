@@ -27,13 +27,13 @@ public class ScoreScreen extends Activity {
 
         TextView header = (TextView)findViewById(R.id.resultsHeader);
 
-        header.setText(quizTitle + " results");
+        header.setText("\"" + quizTitle + "\"" + " final score.");
 
         TextView score = (TextView)findViewById(R.id.score);
 
 
-        score.setText("Your score: " + nCorrect + " out of " + results.size() +
-                ", " + (int)((double)nCorrect/results.size() *100) + "%" );
+        score.setText("Your scored " + nCorrect + " out of " + results.size() +
+                " - " + (int)((double)nCorrect/results.size() *100) + "%!");
 
         LinearLayout scrollViewContent = (LinearLayout)findViewById(R.id.scrollViewContent);
         int i = 0;
