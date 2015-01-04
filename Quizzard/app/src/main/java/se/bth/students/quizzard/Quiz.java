@@ -14,6 +14,8 @@ public class Quiz implements Serializable{
     private String name = "some_name";
     private String author = "some_author";
     double lastResult = 0.0;
+    private float rating = 0;
+    private int numberOfRates = 0;
     boolean finished = false; // if false this quiz has still to be completed with new questions, right answers etc.
 
     public Quiz() {
@@ -70,6 +72,15 @@ public class Quiz implements Serializable{
 
     public void setLastResult(double lastResult) {
         this.lastResult = lastResult;
+    }
+
+    public float rate(float rate){
+        this.rating = (this.rating+rate)/(this.numberOfRates+1);
+        this.numberOfRates++;
+        return this.rating;
+    }
+    public float getRating(){
+        return this.rating;
     }
 
     @Override
