@@ -20,6 +20,9 @@ public class ScoreScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scorescreen);
 
+        // Get Quiz object for rating
+        Quiz q = (Quiz)getIntent().getSerializableExtra("quizObject");
+
         ArrayList<Result> results =
                 (ArrayList<Result>)getIntent().getSerializableExtra("fragments");
 

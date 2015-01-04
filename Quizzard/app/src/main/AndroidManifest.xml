@@ -57,6 +57,7 @@
             android:label="Score"
             android:parentActivityName="se.bth.students.quizzard.ListQuizzes" />
 
+
     </application>
 
 </manifest>
