@@ -142,7 +142,6 @@ public class EditQuiz extends Activity {
 
 
                     Intent i = new Intent(getApplicationContext(), AddQuestion.class);
-                    //i.putExtra("Quiz", quiz);
                     // find out index of next question
                     int index = quiz.getQuestions().size();  //next free pos in questions array
                     startActivityForResult(i, index);
@@ -182,10 +181,8 @@ public class EditQuiz extends Activity {
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == index) { // a new question
                 if (resultCode == RESULT_OK) {
-                    //Log.i("mytag", "IM BACK!");
                     Question newQuestion = (Question) data.getSerializableExtra("Question");
                     this.quiz.addQuestion(newQuestion);
-                    //Log.i("mytag", "the quiz now has: " + this.quiz.getQuestions().size() + " questions");
 
                     // metadata on quiz can't be changed from now on
                     EditText quizNameTxt = (EditText) findViewById(R.id.edit_quiz_name_txt);

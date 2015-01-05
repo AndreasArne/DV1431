@@ -7,16 +7,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -41,7 +37,6 @@ public class ListQuizzes extends Activity {
     private ArrayList<String> listS = new ArrayList<String>();
     private RadioButton buttonServer;
     private RadioButton buttonLocal;
-    //private Button buttonFireList;
     private ArrayAdapter<Quiz> adapterL;
     private ArrayAdapter<String> adapterS;
     private static final int LOCAL_LIST_ID = 1;
@@ -99,14 +94,8 @@ public class ListQuizzes extends Activity {
         LinearLayout container = (LinearLayout) findViewById(R.id.listview_container);
         container.removeAllViews();
         container.addView(currListView);
-
-        //buttonFireList = (Button)findViewById(R.id.buttonFireList);
-        //buttonFireList.setOnClickListener(buttonFireListListener);
-        //quizzesL = (ArrayList<Quiz>) getIntent().getSerializableExtra("quizzes");
-
         adapterL = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1, listL);
         adapterS = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listS);
-        // adapter = new ItemView(this, quizzes);
 
 
         listViewL.setAdapter(adapterL);
@@ -401,8 +390,6 @@ public class ListQuizzes extends Activity {
                 rowView.setBackgroundResource(R.color.white);
             }
         }
-        //listViewL.setDivider(new ColorDrawable(0xff00000));
-        //listViewL.setDividerHeight(1);
         updateUIListLocal();
         saveLocalQuizzesToDisk();
     }
@@ -414,10 +401,7 @@ public class ListQuizzes extends Activity {
     }
     public void makeAsFavorite(int pos) {
         quizzesL.get(pos).setAsFavorite(true);
-            //listViewL.setDivider(new ColorDrawable(0x99F10529));
-            //listViewL.setDividerHeight(1);
-            sort();
-       // }
+        sort();
     }
     public void sort(){
         ArrayList<Quiz> tempQuizzes = quizzesL;

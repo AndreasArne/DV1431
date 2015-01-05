@@ -86,9 +86,7 @@ public class MainActivity extends Activity {
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(),"List quizzes!",Toast.LENGTH_SHORT).show();
                 Intent listInt = new Intent(MainActivity.this,ListQuizzes.class);
-                //listInt.putExtra("quizzes",quizzes);
                 startActivityForResult(listInt, GET_UPDATED_QUIZZES);
             }
         });
@@ -98,27 +96,10 @@ public class MainActivity extends Activity {
         createQ.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //Toast.makeText(MainActivity.this,"Create quiz!",Toast.LENGTH_SHORT ).show();
-                //writeQuizzes();
-                //readQuizzes();
                 Intent createInt = new Intent(getApplicationContext(),CreateQuiz.class);
-                //createInt.putExtra("quizzes",quizzes);
                 startActivityForResult(createInt, GET_NEW_QUIZ_CODE);
             }
         });
-
-
-        // TILLFÄLLIG KNAPP, ta bort när vi har ListQuizzes -> DoQuiz-länken
-     /*   Button btn_doQuiz = (Button) findViewById(R.id.test_do_Quiz);
-        btn_doQuiz.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Do Quiz",Toast.LENGTH_SHORT ).show();
-                Intent doQuizInt = new Intent(MainActivity.this,DoQuiz.class);
-                doQuizInt.putExtra("quizzes",quizzes);
-                startActivity(doQuizInt);
-            }
-        });*/
 
         Toast.makeText(getApplicationContext(), "Shake phone to start random quiz!", Toast.LENGTH_LONG).show();
     }
@@ -149,12 +130,6 @@ public class MainActivity extends Activity {
     }
 
     private void writeQuizzes(){
-        //////////
-        //Quiz q1 = new Quiz("andreas 1","hej 1","koll 1");
-        //Quiz q2 = new Quiz("andreas 2","hej 2","koll 2");
-        //this.quizzes.add(q1);
-        //this.quizzes.add(q2);
-        //////////
 
         File dir = getFilesDir();
         File file = new File (dir, FILE_QUIZZES);
@@ -191,11 +166,6 @@ public class MainActivity extends Activity {
             //reads in an arraylist, containing quiz objects.
              quizzes = (ArrayList<Quiz>) in.readObject();
 
-             ///////
-             //Toast.makeText(getApplicationContext(),quizzes.get(0).getAuthor() + quizzes.get(1).getCourse(),Toast.LENGTH_LONG).show();
-            // Toast.makeText(getApplicationContext(),quizzes.get(1).getName(),Toast.LENGTH_SHORT).show();
-             ////////
-
              in.close();
          }
          catch(Exception ex){
@@ -221,29 +191,6 @@ public class MainActivity extends Activity {
 
 
     }
-
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-      //  getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-   @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
 
     // DEBUGGING PURPOSES ONLY
     private void deleteQuizzesFromDisk() {

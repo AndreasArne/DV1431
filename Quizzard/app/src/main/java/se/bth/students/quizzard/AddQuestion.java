@@ -63,8 +63,6 @@ public class AddQuestion extends Activity  {
             question.setQuestionType(this.question_type);
             question.attachAnswers(this.answers);
             this.question = question;
-           // this.quiz.addQuestion(question);
-            //Log.i("mytag", "in saveQuestion: quiz name: " + quiz.getName() + ", nr of questions: " + quiz.getQuestions().size());
             saveAndFinish(Activity.RESULT_OK);
         }
         else Toast.makeText(getBaseContext(), "You must write the text of the question." , Toast.LENGTH_SHORT).show();
