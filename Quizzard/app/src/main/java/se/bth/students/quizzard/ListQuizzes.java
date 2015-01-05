@@ -142,7 +142,8 @@ public class ListQuizzes extends Activity {
         if (serverView == false)
             updateUIListLocal();
         else updateUIListServer();
-        sort(listViewL);
+        sort();
+        paintFavorite(listViewL);//funkar inte
     }
 
 
@@ -358,8 +359,8 @@ public class ListQuizzes extends Activity {
                 Toast.makeText(this, "You will upload " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
             } else if (itemId == 3){
                 if(!quizzesL.get(aInfo.position).isFavorite()) {
-                    makeAsFavorite(aInfo.position, listV);
-                    //paintFavorite(listV);
+                    makeAsFavorite(aInfo.position);
+                    paintFavorite(listV);
                 }
                 else {
                     removeAsFavorite(aInfo.position, listV);
@@ -396,24 +397,25 @@ public class ListQuizzes extends Activity {
                 rowView.setBackgroundResource(R.color.white);
             }
         }
-        listViewL.setDivider(new ColorDrawable(0x0000000));
-        listViewL.setDividerHeight(1);
+        //listViewL.setDivider(new ColorDrawable(0xff00000));
+        //listViewL.setDividerHeight(1);
         updateUIListLocal();
         saveLocalQuizzesToDisk();
     }
     public void removeAsFavorite(int pos, ListView listV)
     {
         quizzesL.get(pos).setAsFavorite(false);
-        sort(listV);
+        sort();
         //paintFavorite(listV);
     }
-    public void makeAsFavorite(int pos, ListView listV) {quizzesL.get(pos).setAsFavorite(true);
+    public void makeAsFavorite(int pos) {
+        quizzesL.get(pos).setAsFavorite(true);
             //listViewL.setDivider(new ColorDrawable(0x99F10529));
             //listViewL.setDividerHeight(1);
-            sort(listV);
+            sort();
        // }
     }
-    public void sort(ListView listV){
+    public void sort(){
         ArrayList<Quiz> tempQuizzes = quizzesL;
         for (int i = 0; i < tempQuizzes.size() - 1; ++i)
         {
@@ -429,9 +431,9 @@ public class ListQuizzes extends Activity {
             tempQuizzes.set(i, tempQuizzes.get(minIndex));
             tempQuizzes.set(minIndex, tempQuiz);
         }
-        sortWithFavorites(tempQuizzes, listV);
+        sortWithFavorites(tempQuizzes);
     }
-    public void sortWithFavorites(ArrayList<Quiz> sortedArray, ListView listV)
+    public void sortWithFavorites(ArrayList<Quiz> sortedArray)
     {
         ArrayList<Quiz> sortedFavoriteQuizzes = new ArrayList<Quiz>();
         ArrayList<Quiz> sortedLocalQuizzes = new ArrayList<Quiz>();
@@ -455,7 +457,6 @@ public class ListQuizzes extends Activity {
         quizzesL = finalSortedLocalQuizzes;
         updateUIListLocal();
         saveLocalQuizzesToDisk();
-        paintFavorite(listV);
     }
     public void removeQuizFromLocalList(int i) {
         final int idToBeDeleted = i;
@@ -468,6 +469,8 @@ public class ListQuizzes extends Activity {
                     public void onClick(DialogInterface dialog, int id) {
                         quizzesL.remove(idToBeDeleted);
                         //refresh list
+                        sort();
+                        paintFavorite(listViewL);
                         updateUIListLocal();
                     }
                 })

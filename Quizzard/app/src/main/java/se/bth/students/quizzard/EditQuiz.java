@@ -2,23 +2,17 @@ package se.bth.students.quizzard;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -145,7 +138,7 @@ public class EditQuiz extends Activity {
                     EditText author = (EditText) findViewById(R.id.edit_author_txt);
                     String authorName = author.getText().toString();
                     if (quiz == null || quiz.getName().equals("N/A")) // make new quiz obj
-                        quiz = new Quiz(nameQuiz, courseName, authorName);
+                        quiz = new Quiz(nameQuiz, courseName, authorName, false);
 
 
                     Intent i = new Intent(getApplicationContext(), AddQuestion.class);

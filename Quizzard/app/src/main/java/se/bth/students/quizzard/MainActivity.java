@@ -264,7 +264,7 @@ public class MainActivity extends Activity {
 
     private ArrayList<Quiz> getStartQuizzes() {
         ArrayList<Quiz> ret = new ArrayList<Quiz>();
-        Quiz q1 = new Quiz("Sports", "DV1234", "A sports fan");
+        Quiz q1 = new Quiz("Sports", "DV1234", "A sports fan", false);
         ArrayList<Question> questions = new ArrayList<Question>();
         Question question = new Question("How many players does a soccer team have on field?");
         ArrayList<Answer> answers = new ArrayList<Answer>();
@@ -324,7 +324,7 @@ public class MainActivity extends Activity {
 
         ret.add(q1);
 
-        q1 = new Quiz("Languages", "DV1235", "A language-interested person");
+        q1 = new Quiz("Languages", "DV1235", "A language-interested person", false);
         questions = new ArrayList<Question>();
         question = new Question("Which two languages in the list have common roots?");
         answers = new ArrayList<Answer>();
@@ -385,7 +385,7 @@ public class MainActivity extends Activity {
 
         ret.add(q1);
 
-        q1 = new Quiz("D", "DV1235", "A language-interested person");
+        q1 = new Quiz("D", "DV1235", "A language-interested person", false);
         questions = new ArrayList<Question>();
         question = new Question("Which two languages in the list have common roots?");
         answers = new ArrayList<Answer>();
@@ -446,7 +446,7 @@ public class MainActivity extends Activity {
 
         ret.add(q1);
 
-        q1 = new Quiz("C", "DV1235", "A language-interested person");
+        q1 = new Quiz("C", "DV1235", "A language-interested person", false);
         questions = new ArrayList<Question>();
         question = new Question("Which two languages in the list have common roots?");
         answers = new ArrayList<Answer>();
@@ -507,7 +507,7 @@ public class MainActivity extends Activity {
 
         ret.add(q1);
 
-        q1 = new Quiz("B", "DV1235", "A language-interested person");
+        q1 = new Quiz("B", "DV1235", "A language-interested person", false);
         questions = new ArrayList<Question>();
         question = new Question("Which two languages in the list have common roots?");
         answers = new ArrayList<Answer>();
@@ -568,7 +568,7 @@ public class MainActivity extends Activity {
 
         ret.add(q1);
 
-        q1 = new Quiz("A", "DV1235", "A language-interested person");
+        q1 = new Quiz("A", "DV1235", "A language-interested person", false);
         questions = new ArrayList<Question>();
         question = new Question("Which two languages in the list have common roots?");
         answers = new ArrayList<Answer>();
