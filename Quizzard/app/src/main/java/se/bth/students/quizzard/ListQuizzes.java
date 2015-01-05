@@ -406,7 +406,7 @@ public class ListQuizzes extends Activity {
     {
         quizzesL.get(pos).setAsFavorite(false);
         sort();
-        //paintFavorite(listV);
+        paintFavorite(listV);
     }
     public void makeAsFavorite(int pos) {
         quizzesL.get(pos).setAsFavorite(true);
