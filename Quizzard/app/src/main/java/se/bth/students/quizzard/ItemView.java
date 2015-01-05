@@ -42,7 +42,7 @@ public class ItemView extends ArrayAdapter<Quiz>{
             viewHolder.quizName = (TextView) rowView.findViewById(R.id.textViewQuizName);
             viewHolder.courseName = (TextView) rowView.findViewById(R.id.textViewCourse);
             viewHolder.authorName = (TextView) rowView.findViewById(R.id.textViewAuthor);
-            viewHolder.rating = (RatingBar) rowView.findViewById(R.id.ratingBar);
+            viewHolder.rating = (RatingBar) rowView.findViewById(R.id.ratingBar2);
             rowView.setTag(viewHolder);
         }
 
@@ -55,7 +55,7 @@ public class ItemView extends ArrayAdapter<Quiz>{
         holder.quizName.setText(qName.toString());
         holder.courseName.setText(qCourse);
         holder.authorName.setText(qAuthor);
-        holder.rating.setNumStars(rating);
+        holder.rating.setRating(rating);
 
         return rowView;
     }

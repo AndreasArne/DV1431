@@ -295,7 +295,6 @@ public class ListQuizzes extends Activity {
 
     private ArrayList<Quiz> loadLocalQuizzesFromDisk() {
 
-        Toast.makeText(getApplicationContext(),"Hej",Toast.LENGTH_SHORT).show();
         ArrayList<Quiz> ret = null;
         File dir = getFilesDir();
         File file = new File (dir, MainActivity.FILE_QUIZZES);
