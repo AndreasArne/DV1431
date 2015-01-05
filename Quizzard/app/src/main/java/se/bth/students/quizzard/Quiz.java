@@ -13,6 +13,7 @@ public class Quiz implements Serializable{
     private String course = "some_course";
     private String name = "some_name";
     private String author = "some_author";
+    private boolean isFavorite = false;
     double lastResult = 0.0;
     private float rating = 0;
     private int numberOfRates = 0;
@@ -22,12 +23,14 @@ public class Quiz implements Serializable{
         this.course = "N/A";
         this.name = "N/A";
         this.author = "N/A";
+        this.isFavorite = false;
     }
 
-    public Quiz(String name, String course, String author) {
+    public Quiz(String name, String course, String author, boolean makeAsFavorite) {
         this.name = name;
         this.course = course;
         this.author = author;
+        this.isFavorite = makeAsFavorite;
     }
 
     public void attachQuestions(ArrayList<Question> questions) {
@@ -50,6 +53,8 @@ public class Quiz implements Serializable{
         return this.author;
     }
 
+    public boolean isFavorite() { return this.isFavorite; }
+
     void setCourse(String course) {
         this.course = course;
     }
@@ -62,6 +67,9 @@ public class Quiz implements Serializable{
         this.author = author;
     }
 
+    void setAsFavorite(boolean makeAsFavorite) {
+        this.isFavorite = makeAsFavorite;
+    }
     void addQuestion(Question question) {
         this.questions.add(question);
     }
