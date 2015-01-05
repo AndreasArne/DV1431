@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.ContextMenu;
@@ -70,7 +71,8 @@ public class ListQuizzes extends Activity {
 
         listViewL = new ListView (this);
         listViewS = new ListView(this);
-
+        listViewL.setDivider(new ColorDrawable(0x0000000));
+        listViewL.setDividerHeight(2);
         if (serverView == false) {
             // default view is local
             buttonLocal.setChecked(true);
@@ -101,11 +103,12 @@ public class ListQuizzes extends Activity {
         adapterL = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1, listL);
         adapterS = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listS);
         // adapter = new ItemView(this, quizzes);
+
+
         listViewL.setAdapter(adapterL);
         registerForContextMenu(listViewL);
         listViewS.setAdapter(adapterS);
         registerForContextMenu(listViewS);
-
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView av, View v,
@@ -139,7 +142,7 @@ public class ListQuizzes extends Activity {
         if (serverView == false)
             updateUIListLocal();
         else updateUIListServer();
-
+        sort(listViewL);
     }
 
 
@@ -320,6 +323,12 @@ public class ListQuizzes extends Activity {
             menu.add(1, 0, 1, "Edit quiz"); // groupId, itemId, orderIndex, name
             menu.add(1, 1, 2, "Delete quiz");
             menu.add(1, 2, 3, "Upload quiz");
+            if(!quizzesL.get(aInfo.position).isFavorite()) {
+                menu.add(1, 3, 4, "Favoring quiz");
+            }
+            else {
+                menu.add(1, 3, 4, "Remove from favorites");
+            }
         }
 
         if (v.getId() == this.listViewS.getId()) {
@@ -335,9 +344,8 @@ public class ListQuizzes extends Activity {
 
         AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
-
         ListView listV = (ListView) aInfo.targetView.getParent();
-
+        boolean quizName = ((Quiz) adapterL.getItem(aInfo.position)).isFavorite();
         if (listV.getId() == this.listViewL.getId()) {  // Local ListView
 
             if (itemId == 1) { // delete quiz
@@ -348,6 +356,14 @@ public class ListQuizzes extends Activity {
                 editQuiz(aInfo.position);
             } else if (itemId == 2) { // upload quiz
                 Toast.makeText(this, "You will upload " + quizzesL.get(aInfo.position).toString(), Toast.LENGTH_SHORT).show();
+            } else if (itemId == 3){
+                if(!quizzesL.get(aInfo.position).isFavorite()) {
+                    makeAsFavorite(aInfo.position, listV);
+                    //paintFavorite(listV);
+                }
+                else {
+                    removeAsFavorite(aInfo.position, listV);
+                }
             }
         }
 
@@ -358,7 +374,89 @@ public class ListQuizzes extends Activity {
         }
         return true;
     }
+    public View getViewByPosition(int pos, ListView listV) {
+        final int firstListItemPos = listV.getFirstVisiblePosition();
+        final int lastListItemPos = firstListItemPos + listV.getChildCount() - 1;
 
+        if (pos < firstListItemPos || pos > lastListItemPos ) {
+            return listV.getAdapter().getView(pos, null, listV);
+        } else {
+            final int childIndex = pos - firstListItemPos;
+            return listV.getChildAt(childIndex);
+        }
+    }
+    public void paintFavorite(ListView listV) {
+        View rowView = null;
+        for(int i=0; i<quizzesL.size(); i++) {
+            if ((adapterL.getItem(i)).isFavorite()) {
+                rowView = getViewByPosition(i, listV);
+                rowView.setBackgroundResource(R.color.green);
+            } else {
+                rowView = getViewByPosition(i, listV);
+                rowView.setBackgroundResource(R.color.white);
+            }
+        }
+        listViewL.setDivider(new ColorDrawable(0x0000000));
+        listViewL.setDividerHeight(1);
+        updateUIListLocal();
+        saveLocalQuizzesToDisk();
+    }
+    public void removeAsFavorite(int pos, ListView listV)
+    {
+        quizzesL.get(pos).setAsFavorite(false);
+        sort(listV);
+        //paintFavorite(listV);
+    }
+    public void makeAsFavorite(int pos, ListView listV) {quizzesL.get(pos).setAsFavorite(true);
+            //listViewL.setDivider(new ColorDrawable(0x99F10529));
+            //listViewL.setDividerHeight(1);
+            sort(listV);
+       // }
+    }
+    public void sort(ListView listV){
+        ArrayList<Quiz> tempQuizzes = quizzesL;
+        for (int i = 0; i < tempQuizzes.size() - 1; ++i)
+        {
+            int minIndex = i;
+            for (int j = i + 1; j < tempQuizzes.size(); ++j)
+            {
+                if (tempQuizzes.get(j).getName().compareTo(tempQuizzes.get(minIndex).getName()) < 0)
+                {
+                    minIndex = j;
+                }
+            }
+            Quiz tempQuiz = tempQuizzes.get(i);
+            tempQuizzes.set(i, tempQuizzes.get(minIndex));
+            tempQuizzes.set(minIndex, tempQuiz);
+        }
+        sortWithFavorites(tempQuizzes, listV);
+    }
+    public void sortWithFavorites(ArrayList<Quiz> sortedArray, ListView listV)
+    {
+        ArrayList<Quiz> sortedFavoriteQuizzes = new ArrayList<Quiz>();
+        ArrayList<Quiz> sortedLocalQuizzes = new ArrayList<Quiz>();
+        ArrayList<Quiz> finalSortedLocalQuizzes = new ArrayList<Quiz>();
+        for(int i = 0; i<sortedArray.size(); i++)
+        {
+            if (quizzesL.get(i).isFavorite() == true) {
+                sortedFavoriteQuizzes.add(sortedArray.get(i));
+            } else {
+                sortedLocalQuizzes.add(sortedArray.get(i));
+            }
+        }
+        for(int i = 0; i<sortedFavoriteQuizzes.size(); i++)
+        {
+            finalSortedLocalQuizzes.add(sortedFavoriteQuizzes.get(i));
+        }
+        for(int i = 0; i<sortedLocalQuizzes.size(); i++)
+        {
+            finalSortedLocalQuizzes.add(sortedLocalQuizzes.get(i));
+        }
+        quizzesL = finalSortedLocalQuizzes;
+        updateUIListLocal();
+        saveLocalQuizzesToDisk();
+        paintFavorite(listV);
+    }
     public void removeQuizFromLocalList(int i) {
         final int idToBeDeleted = i;
         AlertDialog.Builder builder = new AlertDialog.Builder(ListQuizzes.this);

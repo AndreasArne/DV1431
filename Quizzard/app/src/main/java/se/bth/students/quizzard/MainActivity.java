@@ -3,29 +3,20 @@ package se.bth.students.quizzard;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 
@@ -394,6 +385,249 @@ public class MainActivity extends Activity {
 
         ret.add(q1);
 
+        q1 = new Quiz("D", "DV1235", "A language-interested person");
+        questions = new ArrayList<Question>();
+        question = new Question("Which two languages in the list have common roots?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("English", false);
+        a2 = new Answer("Russian", false);
+        a3 = new Answer("Estonian", true);
+        a4 = new Answer("Hungarian", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What does the Latin expression 'Veni, vidi, vici' mean?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Came, seen, won", true);
+        a2 = new Answer("Ate, drank, slept", false);
+        a3 = new Answer("Came, won, seen", false);
+        a4 = new Answer("Drank, ate, slept", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What language is spoken in the Spanish city of Barcelona?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Spanish", false);
+        a2 = new Answer("Gallic", false);
+        a3 = new Answer("Catalan", true);
+        a4 = new Answer("Arabic", false);
+
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("In which two countries are dialects of the same language spoken by the majority of the population?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("France", false);
+        a2 = new Answer("Saudi Arabia", false);
+        a3 = new Answer("Portugal", true);
+        a4 = new Answer("Brazil", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        ret.add(q1);
+
+        q1 = new Quiz("C", "DV1235", "A language-interested person");
+        questions = new ArrayList<Question>();
+        question = new Question("Which two languages in the list have common roots?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("English", false);
+        a2 = new Answer("Russian", false);
+        a3 = new Answer("Estonian", true);
+        a4 = new Answer("Hungarian", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What does the Latin expression 'Veni, vidi, vici' mean?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Came, seen, won", true);
+        a2 = new Answer("Ate, drank, slept", false);
+        a3 = new Answer("Came, won, seen", false);
+        a4 = new Answer("Drank, ate, slept", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What language is spoken in the Spanish city of Barcelona?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Spanish", false);
+        a2 = new Answer("Gallic", false);
+        a3 = new Answer("Catalan", true);
+        a4 = new Answer("Arabic", false);
+
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("In which two countries are dialects of the same language spoken by the majority of the population?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("France", false);
+        a2 = new Answer("Saudi Arabia", false);
+        a3 = new Answer("Portugal", true);
+        a4 = new Answer("Brazil", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        ret.add(q1);
+
+        q1 = new Quiz("B", "DV1235", "A language-interested person");
+        questions = new ArrayList<Question>();
+        question = new Question("Which two languages in the list have common roots?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("English", false);
+        a2 = new Answer("Russian", false);
+        a3 = new Answer("Estonian", true);
+        a4 = new Answer("Hungarian", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What does the Latin expression 'Veni, vidi, vici' mean?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Came, seen, won", true);
+        a2 = new Answer("Ate, drank, slept", false);
+        a3 = new Answer("Came, won, seen", false);
+        a4 = new Answer("Drank, ate, slept", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What language is spoken in the Spanish city of Barcelona?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Spanish", false);
+        a2 = new Answer("Gallic", false);
+        a3 = new Answer("Catalan", true);
+        a4 = new Answer("Arabic", false);
+
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("In which two countries are dialects of the same language spoken by the majority of the population?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("France", false);
+        a2 = new Answer("Saudi Arabia", false);
+        a3 = new Answer("Portugal", true);
+        a4 = new Answer("Brazil", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        ret.add(q1);
+
+        q1 = new Quiz("A", "DV1235", "A language-interested person");
+        questions = new ArrayList<Question>();
+        question = new Question("Which two languages in the list have common roots?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("English", false);
+        a2 = new Answer("Russian", false);
+        a3 = new Answer("Estonian", true);
+        a4 = new Answer("Hungarian", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What does the Latin expression 'Veni, vidi, vici' mean?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Came, seen, won", true);
+        a2 = new Answer("Ate, drank, slept", false);
+        a3 = new Answer("Came, won, seen", false);
+        a4 = new Answer("Drank, ate, slept", false);
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("What language is spoken in the Spanish city of Barcelona?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("Spanish", false);
+        a2 = new Answer("Gallic", false);
+        a3 = new Answer("Catalan", true);
+        a4 = new Answer("Arabic", false);
+
+        question.setQuestionType(Question.UNIQUE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        question = new Question("In which two countries are dialects of the same language spoken by the majority of the population?");
+        answers = new ArrayList<Answer>();
+        a1 = new Answer("France", false);
+        a2 = new Answer("Saudi Arabia", false);
+        a3 = new Answer("Portugal", true);
+        a4 = new Answer("Brazil", true);
+        question.setQuestionType(Question.MULTIPLE);
+        answers.add(a1);
+        answers.add(a2);
+        answers.add(a3);
+        answers.add(a4);
+        question.attachAnswers(answers);
+        q1.addQuestion(question);
+
+        ret.add(q1);
         return ret;
     }
 }
