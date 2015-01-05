@@ -15,7 +15,7 @@ public class Quiz implements Serializable{
     private String author = "some_author";
     private boolean isFavorite = false;
     double lastResult = 0.0;
-    private float rating = 0;
+    private int rating = 0;
     private int numberOfRates = 0;
     boolean finished = false; // if false this quiz has still to be completed with new questions, right answers etc.
 
@@ -82,16 +82,21 @@ public class Quiz implements Serializable{
         this.lastResult = lastResult;
     }
 
-    public float rate(float rate){
-        this.rating = (this.rating+rate)/(this.numberOfRates+1);
+
+    public int rate(float rate){
+        this.rating+=rate;
         this.numberOfRates++;
-        return this.rating;
+        return this.rating/this.numberOfRates;
     }
-    public float getRating(){
-        return this.rating;
+    public int getRating(){
+        if(this.rating != 0)
+            return this.rating/this.numberOfRates;
+        else
+            return 0;
     }
 
-    @Override
+
+            @Override
     public String toString() {
         String s = "";
         s = this.name;

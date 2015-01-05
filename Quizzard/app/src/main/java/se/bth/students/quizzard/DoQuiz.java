@@ -1,6 +1,7 @@
 package se.bth.students.quizzard;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -120,10 +121,24 @@ public class DoQuiz extends FragmentActivity implements DoQuizFragment.OnSubmitL
         scoreScreenIntent.putExtra("nCorrect", nCorrect);
         scoreScreenIntent.putExtra("quizTitle", currentQuiz.getName());
         scoreScreenIntent.putExtra("quizObject", currentQuiz);
-        startActivityForResult(scoreScreenIntent, 0);
+        startActivityForResult(scoreScreenIntent, 99);
     }
 
-    private String getResultsString() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == Activity.RESULT_OK){
+            //99 == from scorescreen
+            if(requestCode == 99){
+                setResult(Activity.RESULT_OK,data);
+                finish();
+            }
+        }
+    }
+
+
+
+        private String getResultsString() {
         String res = "";
         for (boolean b : questionResult) {
             res += b + " ";

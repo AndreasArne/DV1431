@@ -52,12 +52,16 @@ public class ListQuizzes extends Activity {
     private static final int EDIT_CODE = 5;
     private boolean BACK_PRESSED = false;
 
+    private boolean first=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_quizzes);
 
-        quizzesL = loadLocalQuizzesFromDisk();
+        if(first)
+            quizzesL = loadLocalQuizzesFromDisk();
+        first=false;
         boolean serverView = false;
 
         if (savedInstanceState != null) {
@@ -290,6 +294,8 @@ public class ListQuizzes extends Activity {
     }
 
     private ArrayList<Quiz> loadLocalQuizzesFromDisk() {
+
+        Toast.makeText(getApplicationContext(),"Hej",Toast.LENGTH_SHORT).show();
         ArrayList<Quiz> ret = null;
         File dir = getFilesDir();
         File file = new File (dir, MainActivity.FILE_QUIZZES);
@@ -301,7 +307,6 @@ public class ListQuizzes extends Activity {
 
             //reads in an arraylist, containing quiz objects.
             ret = (ArrayList<Quiz>) in.readObject();
-
             in.close();
         }
         catch(Exception ex){
@@ -496,11 +501,21 @@ public class ListQuizzes extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == DO_CODE) {
-                Quiz updatedQuiz = quizzesL.get(requestCode);
-                Bundle b = getIntent().getExtras();
-                double result = b.getDouble("result");
                 // check result for null
                 // do something with result
+                Quiz rQuiz = (Quiz) data.getSerializableExtra("Quiz");
+                if (rQuiz != null) {
+                    int found = -1;
+                    for (int i = 0; found == -1 && i < quizzesL.size(); i++) {
+                        if (quizzesL.get(i).getName().equals(rQuiz.getName())) {
+                            found = i;
+                        }
+                    }
+                    if (found != -1) {
+                        quizzesL.set(found, rQuiz);
+                        saveLocalQuizzesToDisk();
+                    }
+                }
             }
 
             if (requestCode == EDIT_CODE) {
