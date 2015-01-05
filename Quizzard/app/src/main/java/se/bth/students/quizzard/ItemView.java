@@ -1,11 +1,11 @@
 package se.bth.students.quizzard;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,38 +13,51 @@ import java.util.ArrayList;
 /**
  * Created by gadden on 2014-12-08.
  */
-public class ItemView extends BaseAdapter{
-    private Activity activity;
-    private ArrayList<Quiz> quizzes;
-    private static LayoutInflater inflater=null;
-    public ItemView(Activity a, ArrayList<Quiz> quiz) {
-        activity = a;
-        quizzes = quiz;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+public class ItemView extends ArrayAdapter<Quiz>{
+    private final Activity context;
+    private final ArrayList<Quiz> quizzes;
+
+    static class ViewHolder {
+        public TextView quizName;
+        public TextView courseName;
+        public TextView authorName;
+        public RatingBar rating;
     }
 
-    public int getCount() {
-        return quizzes.size();
+    public ItemView(Activity context, ArrayList<Quiz> quizzes) {
+        super(context, R.layout.list_item);
+        this.context = context;
+        this.quizzes = quizzes;
     }
 
-    public Object getItem(int position) {
-        return position;
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View vi=convertView;
-        if(convertView==null)
-            vi = inflater.inflate(R.layout.list_item, null);
+        View rowView = convertView;
+        // reuse views
+        if (rowView == null) {
+            LayoutInflater inflater = context.getLayoutInflater();
+            rowView = inflater.inflate(R.layout.list_item, null);
+            // configure view holder
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.quizName = (TextView) rowView.findViewById(R.id.textViewQuizName);
+            viewHolder.courseName = (TextView) rowView.findViewById(R.id.textViewCourse);
+            viewHolder.authorName = (TextView) rowView.findViewById(R.id.textViewAuthor);
+            viewHolder.rating = (RatingBar) rowView.findViewById(R.id.ratingBar);
+            rowView.setTag(viewHolder);
+        }
 
-        TextView courseTextFiled=(TextView)vi.findViewById(R.id.textViewItemCourse);
-        TextView nameTextFiled=(TextView)vi.findViewById(R.id.textViewItemName);
-        TextView authorTextFiled=(TextView)vi.findViewById(R.id.textViewItemAuthor);
-        courseTextFiled.setText(quizzes.get(0).getCourse());
-        nameTextFiled.setText(quizzes.get(0).getName());
-        authorTextFiled.setText(quizzes.get(0).getAuthor());
-        return vi;
+        // fill data
+        ViewHolder holder = (ViewHolder) rowView.getTag();
+        String qName = quizzes.get(position).getName();
+        String qCourse = quizzes.get(position).getName();
+        String qAuthor = quizzes.get(position).getName();
+        int rating = (int)quizzes.get(position).getRating();
+        holder.quizName.setText(qName.toString());
+        holder.courseName.setText(qCourse);
+        holder.authorName.setText(qAuthor);
+        holder.rating.setNumStars(rating);
+
+        return rowView;
     }
 }
+
